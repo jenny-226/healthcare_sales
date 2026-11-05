@@ -1,0 +1,49 @@
+/* 🏠 홈 — .tab-home 안에서만 */
+.tab-home .home-kanban { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.tab-home .home-col { background: var(--bg); border-radius: 10px; padding: 8px; display: flex; flex-direction: column; gap: 8px; min-height: 120px; }
+.tab-home .home-col-head { font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 6px; padding: 2px 4px; }
+.tab-home .home-col-empty { padding: 4px; }
+.tab-home .home-case { text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 10px; cursor: pointer; font: inherit; display: flex; flex-direction: column; gap: 4px; }
+.tab-home .home-case:hover { border-color: var(--primary); }
+.tab-home .home-case.selected { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-soft); }
+.tab-home .home-case-top { display: flex; gap: 4px; flex-wrap: wrap; }
+.tab-home .home-case-title { font-weight: 700; }
+.tab-home .home-case-foot { display: flex; flex-direction: column; gap: 2px; margin-top: 2px; }
+
+.tab-home .home-tasks { display: flex; flex-direction: column; gap: 6px; max-height: 420px; overflow-y: auto; }
+.tab-home .home-task { display: flex; gap: 12px; align-items: flex-start; text-align: left; font: inherit; background: #fff; border: 1px solid var(--line); border-left-width: 4px; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
+.tab-home .home-task:hover { background: #F9FAFB; }
+.tab-home .home-task.t-over { border-left-color: var(--block); }
+.tab-home .home-task.t-soon { border-left-color: var(--action); }
+.tab-home .home-task.t-later { border-left-color: var(--line-strong); }
+.tab-home .home-task.t-wait { border-left-color: var(--primary); }
+.tab-home .home-task-date { min-width: 84px; font-size: 12px; font-weight: 600; text-align: center; }
+.tab-home .home-task-main { display: flex; flex-direction: column; gap: 2px; }
+.tab-home .home-task-label { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-weight: 500; }
+
+.tab-home .home-clock { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.tab-home .home-clock:last-child { border-bottom: none; }
+.tab-home .home-clock-city { font-weight: 600; }
+.tab-home .home-clock-time { font-variant-numeric: tabular-nums; font-size: 13px; }
+.tab-home .home-clock-status { font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 6px; }
+.tab-home .s-work { background: var(--primary-soft); color: var(--primary); }
+.tab-home .s-off { background: var(--noted-bg); color: var(--muted); }
+.tab-home .s-weekend { background: #fff; color: var(--muted); border: 1px dashed var(--line-strong); }
+
+.tab-home .home-fx { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.tab-home .home-fx div { display: flex; flex-direction: column; background: var(--bg); border-radius: 8px; padding: 8px 10px; }
+
+.tab-home .home-buyers { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.tab-home .home-buyer { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.tab-home .home-buyer-top { display: flex; gap: 4px; flex-wrap: wrap; }
+.tab-home .home-buyer-name { font-weight: 700; font-size: 15px; }
+.tab-home .home-buyer .kv { margin: 2px 0; }
+.tab-home .home-buyer .warn-box { margin: 2px 0; width: 100%; }
+
+.tab-home .home-alerts { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.tab-home .home-alert { display: flex; flex-direction: column; gap: 2px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.tab-home .home-alert:last-child { border-bottom: none; }
+
+.tab-home .home-markets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.tab-home .home-market { border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+.tab-home .home-market-num { font-size: 20px; font-weight: 700; margin: 6px 0 2px; }

@@ -1,0 +1,4 @@
+﻿id,sample,product_id,type,issued_at,expires_at,lab_name,lab_iso17025,lab_moh_designated,legalization,file_name,note
+D-001,1,P-001,TEST_REPORT,2025-09-10,,가상 시험연구원,1,0,none,test_report_P001.pdf,
+D-002,1,P-001,CFS,2026-08-20,,,,,none,cfs_P001.pdf,합법화 전
+D-003,1,P-001,GMP,2026-03-01,2029-02-28,,,,none,gmp_factory.pdf,P-001 생산 라인 (예시)

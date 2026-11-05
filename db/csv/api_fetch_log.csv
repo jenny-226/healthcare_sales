@@ -1,0 +1,11 @@
+﻿dataset,rows,source,note,fetched_at
+holidays,163,date.nager.at,VN 음력 설 연휴·대체휴일은 정부 발표로 확인 필요. US는 연방 공휴일(is_global=1)만 영업일 계산에 사용 권장,2026-11-05
+fx_rates,3,ExchangeRate-API (open.er-api.com),원가 탭 기준 환율. 견적 확정 전 은행 고시 환율로 재확인,2026-11-05
+kr_notified_ingredients,554,식품안전나라 I2710,전체 554건,2026-11-05
+kr_individual_ingredients,779,식품안전나라 I-0040,전체 779건,2026-11-05
+kr_item_groups,585,식품안전나라 I0760,전체 585건,2026-11-05
+kr_hff_products,46200,식품안전나라 I0030,전체 46200건,2026-11-05
+fda_supplement_recalls,587,openFDA food/enforcement,품목 설명에 'dietary supplement'가 들어간 리콜만. openFDA 데이터는 검증되지 않은 자료로 취급,2026-11-05
+export_stats,0,관세청 nitemtrade,키 없음 — 건너뜀,2026-11-05
+vn_holidays_2027,22,baochinhphu.vn 2026-10-12 (db/source/vn_holidays_2027.pdf),Nager.Date VN 2027을 정부 발표로 교체. 설(Tết) 2/4~2/10은 공무원 기준(민간은 3가지 안 중 선택),2026-11-06
+jp_pharma_only,332,厚生労働省 専ら医薬品として使用される成分本質(原材料)リスト (db/source/jp_pharma_only_ingredients.pdf),"PDF 표를 그대로 옮김. 部位等에 적힌 부위만 의약품 전용, 備考 「非医」는 다른 부위·유사 원료",2026-11-06

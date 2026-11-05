@@ -1,0 +1,12 @@
+﻿country,doc_type,label,rule_id
+JP,FFC_EVIDENCE,안전성·기능성 과학적 근거 자료,JP-EVD-01
+JP,GMP,GMP 증명서,JP-MFG-01
+VN,CFS,"자유판매증명서 (CFS, 아포스티유/대사관 합법화)",VN-DOC-CFS
+VN,TEST_REPORT,"시험성적서 (12개월 이내, 인정 기관)",VN-DOC-TEST
+VN,EFFICACY,효능 근거 자료 (성분·용량 일치),VN-DOC-EVD
+VN,GMP,GMP 증명서 (베트남 인정),VN-DOC-GMP
+VN,LOA,제조사 위임장 (LoA),VN-APP-01
+VN,LABEL,베트남어 라벨 (등록 문구와 1:1),VN-LBL-01
+US,FDA_FACILITY,FDA 식품시설 등록 (2년마다 갱신),US-FAC-01
+US,CGMP,cGMP (21 CFR Part 111) 준수 자료,US-MFG-01
+US,NDI_NOTICE,NDI 통지 자료,US-NDI-01

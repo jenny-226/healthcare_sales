@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>대시보드 테스트</title>
+  <style>
+    body { font-family: 'Pretendard', 'Malgun Gothic', sans-serif; margin: 24px; color: #1D2939; background: #F5F6F8; }
+    h1 { font-size: 20px; }
+    .summary { padding: 10px 14px; border-radius: 8px; font-weight: 700; margin-bottom: 16px; background: #fff; border: 1px solid #E4E7EC; }
+    .summary.fail { border-color: #D92D20; color: #D92D20; }
+    section { background: #fff; border: 1px solid #E4E7EC; border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; }
+    h2 { font-size: 15px; margin: 0 0 8px; }
+    li { font-size: 13px; margin: 3px 0; }
+    .pass::marker { content: '✔ '; color: #2F6FEB; }
+    .fail { color: #D92D20; }
+    .fail::marker { content: '✘ '; }
+    code { background: #F2F4F7; padding: 0 4px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>건기식 해외영업 대시보드 — 테스트</h1>
+  <p>README 9장 마감 계산 예시와 12장 시나리오 A·B·C의 규칙 판정을 검사합니다. (공휴일 없이 계산)</p>
+  <div id="summary" class="summary">실행 중…</div>
+  <div id="results"></div>
+
+  <script>
+    // 아주 작은 테스트 러너 (전역 TEST는 테스트 페이지에서만 사용)
+    window.TEST = (function () {
+      const suites = [];
+      let current = null;
+      function suite(name, fn) {
+        current = { name, items: [] };
+        suites.push(current);
+        try { fn(); } catch (e) { current.items.push({ ok: false, msg: '예외: ' + e.message }); }
+      }
+      function ok(v, msg) { current.items.push({ ok: !!v, msg }); }
+      function eq(a, b, msg) {
+        const pass = JSON.stringify(a) === JSON.stringify(b);
+        current.items.push({ ok: pass, msg: pass ? msg : `${msg} — 기대 ${JSON.stringify(b)}, 실제 ${JSON.stringify(a)}` });
+      }
+      return { suite, ok, eq, suites };
+    })();
+  </script>
+
+  <script src="../data/rules-jp.js"></script>
+  <script src="../data/rules-vn.js"></script>
+  <script src="../data/rules-us.js"></script>
+  <script src="../data/claim-terms.js"></script>
+  <script src="../data/packaging-presets.js"></script>
+  <script src="../data/holidays.js"></script>
+  <script src="../data/sample-products.js"></script>
+  <script src="../data/sample-cases.js"></script>
+  <script src="../js/core/dates.js"></script>
+  <script src="../js/core/store.js"></script>
+  <script src="../js/core/ui.js"></script>
+  <script src="../js/services/cases.js"></script>
+  <script src="../js/services/products.js"></script>
+  <script src="../js/services/documents.js"></script>
+  <script src="../js/services/rules.js"></script>
+  <script src="../js/services/settings.js"></script>
+  <script src="../js/core/rules-engine.js"></script>
+  <script>
+    // 저장된 공휴일과 무관하게 같은 결과가 나오도록 공휴일을 비운다
+    DASH.dates.setHolidayProvider(() => []);
+  </script>
+
+  <script src="dates.test.js"></script>
+  <script src="rules.test.js"></script>
+
+  <script>
+    (function () {
+      const esc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+      let total = 0, failed = 0;
+      document.getElementById('results').innerHTML = TEST.suites.map(s => {
+        total += s.items.length;
+        failed += s.items.filter(i => !i.ok).length;
+        return `<section><h2>${esc(s.name)}</h2><ul>${s.items.map(i => `<li class="${i.ok ? 'pass' : 'fail'}">${esc(i.msg)}</li>`).join('')}</ul></section>`;
+      }).join('');
+      const sum = document.getElementById('summary');
+      sum.textContent = failed ? `실패 ${failed} / 전체 ${total}` : `전부 통과 (${total}개)`;
+      if (failed) sum.classList.add('fail');
+    })();
+  </script>
+</body>
+</html>

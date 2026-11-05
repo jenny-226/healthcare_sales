@@ -1,0 +1,25 @@
+﻿country,term_group,term
+US,disease,cure
+US,disease,treat
+US,disease,prevent
+US,disease,diagnose
+US,disease,heal
+US,disease,disease
+US,disease,치료
+US,disease,예방
+US,disease,완화
+US,disease,질병
+JP,excludedTarget,임산부
+JP,excludedTarget,수유
+JP,excludedTarget,어린이
+JP,excludedTarget,미성년
+JP,excludedTarget,환자
+JP,excludedTarget,妊婦
+JP,excludedTarget,授乳
+JP,excludedTarget,子ども
+JP,excludedTarget,病気
+VN,medicineLike,thuốc
+VN,medicineLike,chữa
+VN,medicineLike,điều trị
+VN,medicineLike,치료
+VN,medicineLike,약

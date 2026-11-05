@@ -1,0 +1,6 @@
+﻿id,label,count_per_unit,units_per_carton,carton_cbm,pack_krw
+bottle-60cap,병 60캡슐,60,100,0.045,450
+bottle-90tab,병 90정,90,80,0.05,500
+stick-30,스틱 30포,30,60,0.06,650
+ptp-blister,PTP 블리스터 (30정),30,200,0.04,300
+jelly-pouch,젤리 파우치 (14포),14,48,0.055,700

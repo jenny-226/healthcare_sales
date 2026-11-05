@@ -1,0 +1,10 @@
+﻿country,date,title,status,rule_id
+JP,2024-09-01,FFC 신규 의무 4가지 시행 (건강피해 보고 15일 등),effective,JP-PM-01
+JP,2026-08-31,새 표시 방식 경과조치 종료,effective,JP-LBL-02
+JP,2026-09-01,보충제 형태 GMP 의무 유예 종료,effective,JP-MFG-01
+VN,2018-02-02,Decree 15/2018/ND-CP — 현재 적용 규정,effective,VN-LAW-01
+VN,2026-01-26,Decree 46/2026 시행,suspended,VN-LAW-01
+VN,2026-04-08,Decree 46/2026 정지 (결의 15/2026),suspended,VN-LAW-01
+VN,2026-07-01,광고 내용 확인서 발급 기관 → 성(省) 인민위원회,effective,VN-ADV-01
+VN,2026-10-01,식품안전법 개정안 논의 (2026년 10~11월 예정),draft,VN-LAW-01
+US,1994-10-15,DSHEA — 이 날 이전 미국 미시판 원료는 NDI,effective,US-NDI-01

@@ -1,0 +1,13 @@
+/* 💰 원가 — .tab-cost 안에서만 */
+.tab-cost .cost-sel { font-weight: 700; color: var(--primary); }
+.tab-cost .cost-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0 6px; }
+.tab-cost .cost-kpis div { display: flex; flex-direction: column; background: var(--bg); border-radius: 8px; padding: 10px 12px; }
+.tab-cost .cost-kpis strong { font-size: 20px; }
+.tab-cost .decision { border-radius: 8px; padding: 10px 12px; margin-top: 4px; border-left: 4px solid; }
+.tab-cost .d-ok { background: var(--primary-soft); border-color: var(--primary); }
+.tab-cost .d-mid { background: var(--review-bg); border-color: var(--review); }
+.tab-cost .d-no { background: var(--block-bg); border-color: var(--block); }
+.tab-cost .cost-ve { padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
+.tab-cost .cost-ve ul { padding-left: 4px; list-style: none; display: flex; flex-direction: column; gap: 4px; margin: 4px 0 0; font-size: 13px; }
+.tab-cost .cost-letter { font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+.tab-cost h4:first-of-type { margin-top: 4px; }

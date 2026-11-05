@@ -1,0 +1,12 @@
+﻿country,seq,step_key,label
+JP,1,provide,우리 자료 제공
+JP,2,notify,바이어 신고 (소비자청)
+JP,3,sellable,판매 가능일
+VN,1,prepare,서류 준비
+VN,2,submit,제출
+VN,3,query,보완 요청 대응 (반복)
+VN,4,registered,등록
+VN,5,adconfirm,광고 내용 확인서
+US,1,ndi,NDI 통지 (해당 시)
+US,2,launch,출시
+US,3,claim,구조·기능 표현 FDA 통지

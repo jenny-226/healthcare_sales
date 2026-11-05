@@ -1,0 +1,4 @@
+﻿id,sample,country,name,type,lead_source,contact_name,contact_email,timezone,holder_capability_json,last_contact_at,awaiting_reply
+B-001,1,JP,Sakura Drug Chain (가상),retail_chain,2026 도쿄 건강식품 전시회,Tanaka,tanaka@example.jp,Asia/Tokyo,"{""JP"":{""ffcRecord"":true,""adverseReporting"":true},""VN"":null,""US"":null}",2026-10-28,0
+B-002,1,VN,A Pharma Supply JSC (가상),pharmacy_supplier,2026 KOTRA 상담회,Nguyen,nguyen@example.vn,Asia/Ho_Chi_Minh,"{""JP"":null,""VN"":{""localEntity"":false,""pastRegistrations"":0,""canAcceptLoA"":false},""US"":null}",2026-11-01,1
+B-003,1,US,Brightway Nutrition Inc. (가상),brand_owner,2026 SupplySide 미팅,Jordan,jordan@example.com,America/Los_Angeles,"{""JP"":null,""VN"":null,""US"":{""fsvpImporter"":true,""retailerDocs"":false}}",2026-10-30,0

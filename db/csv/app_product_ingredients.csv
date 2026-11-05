@@ -1,0 +1,8 @@
+﻿product_id,seq,ingredient_id,name_ko,name_en,amount_per_serving,unit,korea_individual,jp_pharma_only
+P-001,1,ING-001,프로바이오틱스,Probiotics,10,billion CFU,0,
+P-001,2,ING-002,프락토올리고당,Fructooligosaccharide,300,mg,0,
+P-002,1,ING-003,저분자 콜라겐 펩타이드,Collagen peptide,1000,mg,1,
+P-002,2,ING-004,히알루론산,Hyaluronic acid,120,mg,0,
+P-002,3,ING-005,비타민 C,Vitamin C,100,mg,0,
+P-003,1,ING-006,가상 식물 추출물 A (개별인정형),Botanical extract A (virtual),250,mg,1,
+P-003,2,ING-007,MSM,Methylsulfonylmethane,500,mg,0,

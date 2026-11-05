@@ -1,0 +1,18 @@
+/* 📜 규제 확인 — .tab-reg 안에서만 */
+.tab-reg .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+.tab-reg .reg-summary { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 16px; }
+.tab-reg .reg-sum-item { display: flex; align-items: center; gap: 6px; font-size: 15px; }
+.tab-reg .reg-3col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tab-reg .reg-checklist { margin-top: 8px; padding: 10px 12px; background: var(--bg); border-radius: 8px; }
+.tab-reg .reg-checklist label.check { margin: 4px 0; }
+.tab-reg .reg-file { max-width: 420px; }
+.tab-reg .reg-compare td { vertical-align: top; }
+.tab-reg .reg-timeline { list-style: none; margin: 0; padding: 0 0 0 14px; border-left: 2px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
+.tab-reg .reg-tl-item { display: grid; grid-template-columns: 96px 170px 1fr; gap: 10px; align-items: center; position: relative; }
+.tab-reg .reg-tl-item::before { content: ''; position: absolute; left: -20px; width: 10px; height: 10px; border-radius: 50%; background: var(--primary); }
+.tab-reg .reg-tl-item.st-suspended::before { background: var(--block); }
+.tab-reg .reg-tl-item.st-draft::before { background: #fff; border: 2px dashed var(--unknown); }
+.tab-reg .reg-tl-date { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 13px; }
+.map-preview { margin-top: 10px; }
+.tab-reg input[type="search"] { width: 100%; box-sizing: border-box; padding: 6px 10px; border: 1px solid var(--line-strong); border-radius: 8px; margin: 6px 0 8px; font: inherit; font-size: 13px; }
+.tab-reg .chips { flex-wrap: wrap; margin-bottom: 4px; }
