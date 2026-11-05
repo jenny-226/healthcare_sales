@@ -4,7 +4,7 @@
   const tabs = [];
   let activeId = null;
 
-  // def: {id, icon, label, order, cssClass, needsCase, admin, render(el, ctx), summary(ctx)}
+  // def: {id, icon, label, order, cssClass, needsCase, render(el, ctx), summary(ctx)}
   DASH.registerTab = function (def) {
     tabs.push(def);
     tabs.sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -46,8 +46,7 @@
       return `<a href="#${t.id}" class="nav-item${t.id === activeId ? ' active' : ''}" data-tab="${t.id}">
         <span class="nav-icon" aria-hidden="true">${t.icon}</span><span class="nav-label">${esc(t.label)}</span>${count}</a>`;
     };
-    document.getElementById('nav').innerHTML = tabs.filter(t => !t.admin).map(item).join('');
-    document.getElementById('nav-admin').innerHTML = tabs.filter(t => t.admin).map(item).join('');
+    document.getElementById('nav').innerHTML = tabs.map(item).join('');
   }
 
   function renderCaseBar() {
@@ -62,16 +61,15 @@
         ${cases.map(c => `<option value="${esc(c.id)}"${c.id === cur ? ' selected' : ''}>${esc(c.id)} · ${esc(caseLabel(c))}</option>`).join('')}
       </select>
       <button class="btn primary" data-act="new-case">+ 새 건</button>
+      <button class="btn" data-act="manage">건·바이어 관리</button>
       <span class="casebar-spacer"></span>
       <span class="casebar-note" title="화면의 모든 판정은 1차 참고용입니다. 최종 판단은 규제 담당과 현지 바이어(명의자)가 합니다.">⚠️ 사전검토 보조 도구</span>`;
     el.querySelector('#case-select').addEventListener('change', e => {
       if (e.target.value) DASH.caseContext.select(e.target.value);
       else DASH.caseContext.clear();
     });
-    el.querySelector('[data-act="new-case"]').addEventListener('click', () => {
-      DASH.go('home');
-      setTimeout(() => document.dispatchEvent(new CustomEvent('case:new')), 0);
-    });
+    el.querySelector('[data-act="new-case"]').addEventListener('click', () => DASH.manager.openNewCase());
+    el.querySelector('[data-act="manage"]').addEventListener('click', () => DASH.manager.openManager());
   }
 
   // README 7-0: VN 건을 열면 모든 탭 상단에 VN-LAW-01 배너 고정
@@ -101,7 +99,11 @@
     renderNav();
     renderBanner(ctx, def);
     document.title = `${def.label} · 건기식 해외영업 대시보드`;
-    if (def.needsCase && !ctx) { root.innerHTML = DASH.ui.emptyCase(); return; }
+    if (def.needsCase && !ctx) {
+      root.innerHTML = DASH.ui.emptyCase();
+      root.querySelector('[data-act="empty-new-case"]').addEventListener('click', () => DASH.manager.openNewCase());
+      return;
+    }
     try {
       def.render(root, ctx);
     } catch (e) {

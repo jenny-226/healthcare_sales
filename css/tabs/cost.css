@@ -1,13 +1,114 @@
-/* 💰 원가 — .tab-cost 안에서만 */
+/* 💰 원가 — .tab-cost 안에서만. COSTD: 왼쪽 입력 Card + 오른쪽 4개 탭 결과 */
+.tab-cost .cost-layout { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 16px; align-items: start; }
+.tab-cost .cost-left { display: flex; flex-direction: column; gap: 12px; }
+.tab-cost .cost-right { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.tab-cost .cost-left .card-body { padding: 12px 16px 14px; }
+.tab-cost .cost-left .card-head { padding: 12px 16px; }
+.tab-cost .cost-unit { position: relative; display: flex; align-items: center; }
+.tab-cost .cost-unit input { padding-right: 34px; text-align: right; }
+.tab-cost .cost-unit i { position: absolute; right: 10px; font-style: normal; color: var(--muted); font-size: 12px; pointer-events: none; }
+.tab-cost .cost-add { display: flex; gap: 6px; }
+.tab-cost .cost-plan-row { display: flex; gap: 6px; align-items: center; margin-bottom: 10px; }
+.tab-cost .block-btn { width: 100%; justify-content: center; margin-bottom: 10px; }
+.tab-cost .cost-items { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tab-cost .cost-items th { text-align: left; font-size: 12px; color: var(--muted); font-weight: 600; padding: 4px; }
+.tab-cost .cost-items td { padding: 3px 4px; }
+.tab-cost .cost-items td:first-child { white-space: nowrap; font-weight: 600; }
+.tab-cost .cost-items td:last-child input { width: 72px; }
+.tab-cost .cost-items input { text-align: right; padding: 5px 8px; }
+.tab-cost .cost-fold > summary { border-bottom: none; }
+.tab-cost .cost-fold[open] > summary { border-bottom: 1px solid var(--line); }
+.tab-cost .cost-now { padding: 12px 16px; background: var(--primary-soft); border-color: #B2CCFF; position: sticky; bottom: 8px; }
+.tab-cost .cost-now-price { font-size: 26px; font-weight: 800; color: var(--primary); }
+
+.tab-cost .cost-bar { display: flex; align-items: center; gap: 10px; padding: 8px 12px; flex-wrap: wrap; }
+.tab-cost .cost-fx { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.tab-cost .cost-fx input { width: 96px; text-align: right; }
+.tab-cost .cost-panel { display: flex; flex-direction: column; gap: 16px; }
+
+/* 견적 계산 */
+.tab-cost .cost-qhead { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 12px; }
+.tab-cost .cost-qhead-r { text-align: right; }
+.tab-cost .cost-big { font-size: 34px; font-weight: 800; color: var(--primary); line-height: 1.1; }
+.tab-cost .cost-big small { font-size: 14px; color: var(--muted); font-weight: 500; margin-left: 4px; }
+.tab-cost .cost-stack { display: flex; height: 28px; border-radius: 8px; overflow: hidden; gap: 2px; }
+.tab-cost .cost-stack span { display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #1D2939; min-width: 2px; }
+.tab-cost .cost-legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: var(--muted); margin: 6px 0 12px; align-items: center; }
+.tab-cost .cost-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 3px; vertical-align: middle; }
+.tab-cost .p-cost { background: #D1E0FF; }
+.tab-cost .p-first { background: #84CAFF; }
+.tab-cost .p-log { background: #D9D6FE; }
+.tab-cost .p-logm { background: #FEF0C7; }
+.tab-cost .p-sales { background: #84ADFF; }
 .tab-cost .cost-sel { font-weight: 700; color: var(--primary); }
-.tab-cost .cost-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0 6px; }
-.tab-cost .cost-kpis div { display: flex; flex-direction: column; background: var(--bg); border-radius: 8px; padding: 10px 12px; }
-.tab-cost .cost-kpis strong { font-size: 20px; }
-.tab-cost .decision { border-radius: 8px; padding: 10px 12px; margin-top: 4px; border-left: 4px solid; }
-.tab-cost .d-ok { background: var(--primary-soft); border-color: var(--primary); }
-.tab-cost .d-mid { background: var(--review-bg); border-color: var(--review); }
-.tab-cost .d-no { background: var(--block-bg); border-color: var(--block); }
-.tab-cost .cost-ve { padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
-.tab-cost .cost-ve ul { padding-left: 4px; list-style: none; display: flex; flex-direction: column; gap: 4px; margin: 4px 0 0; font-size: 13px; }
+.tab-cost .cost-doc-opts { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.tab-cost .lbl { font-size: 12px; font-weight: 600; color: var(--muted); }
+.tab-cost .cost-doc { border: 1px solid var(--line); border-radius: 10px; padding: 14px; background: #FCFCFD; }
+.tab-cost .cost-doc-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.tab-cost .cost-doc-head strong { letter-spacing: 2px; color: var(--primary); }
 .tab-cost .cost-letter { font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
-.tab-cost h4:first-of-type { margin-top: 4px; }
+
+/* 역제안 분석 — 판정 구간 색 (초록 대신 파랑 = 수락) */
+.tab-cost .cost-rtop { display: grid; grid-template-columns: 4fr 6fr; gap: 16px; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+.tab-cost .cost-verdict { background: var(--bg); border-radius: 10px; padding: 12px; text-align: center; display: flex; flex-direction: column; gap: 4px; }
+.tab-cost .cost-verdict-badges { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; align-items: center; }
+.tab-cost .cost-verdict-main { font-size: 16px; }
+.tab-cost .cost-short { color: var(--block); font-weight: 700; margin-left: 6px; }
+.tab-cost .cost-ok { color: var(--primary); font-weight: 700; margin-left: 6px; }
+.tab-cost .cost-rnr-info { background: var(--primary-soft); color: var(--primary); }
+.tab-cost .z-reject { background: #F97066; color: #fff; }
+.tab-cost .z-adjust { background: #FDB022; color: #3D2600; }
+.tab-cost .z-concede { background: #FEDF89; color: #5A3B00; }
+.tab-cost .z-accept { background: #84ADFF; color: #0A2A6B; }
+.tab-cost .is-loss { background: #D0D5DD; }
+.tab-cost .cost-gauge-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tab-cost .cost-gauge-head .cost-legend { margin: 0; }
+.tab-cost .cost-gauge { padding: 34px 40px 44px; }
+.tab-cost .cost-gauge-bar { position: relative; height: 12px; border-radius: 6px; background: var(--noted-bg); }
+.tab-cost .cost-gauge-bar > span:not(.cost-pin) { position: absolute; top: 0; bottom: 0; }
+.tab-cost .cost-pin { position: absolute; top: -6px; width: 4px; height: 24px; background: #101828; border-radius: 2px; transform: translateX(-2px); }
+.tab-cost .cost-pin em { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); background: #101828; color: #fff; font-style: normal; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; white-space: nowrap; }
+.tab-cost .cost-gauge-ticks { position: relative; height: 0; }
+.tab-cost .cost-gauge-ticks span { position: absolute; top: 6px; transform: translateX(-50%); font-size: 11px; color: var(--muted); text-align: center; white-space: nowrap; display: flex; flex-direction: column; }
+.tab-cost .cost-gauge-ticks b { color: var(--text); font-size: 12px; }
+.tab-cost .cost-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+.tab-cost .cost-opt { background: var(--bg); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; border: 1px solid transparent; }
+.tab-cost .cost-opt.hi { border-color: var(--primary); background: var(--primary-soft); }
+.tab-cost .cost-opt strong { font-size: 20px; }
+.tab-cost .cost-ve-row { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; margin-bottom: 6px; font-size: 13px; cursor: pointer; }
+.tab-cost .cost-ve-row b { color: var(--primary); }
+.tab-cost .cost-ve-ings { padding: 8px 10px; background: var(--bg); border-radius: 8px; margin-bottom: 6px; }
+.tab-cost .cost-ve { padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+.tab-cost .cost-ve ul { padding-left: 4px; list-style: none; display: flex; flex-direction: column; gap: 4px; margin: 4px 0 0; }
+.tab-cost .cost-adj-row { display: grid; grid-template-columns: 1fr 110px; gap: 8px; align-items: center; padding: 6px 8px; border-radius: 8px; font-size: 13px; }
+.tab-cost .cost-adj-row.is-changed { background: var(--primary-soft); }
+
+/* 수량별 단가 */
+.tab-cost .cost-moq { display: grid; grid-template-columns: 1fr 1.3fr 1fr 1.3fr; gap: 12px; align-items: end; }
+.tab-cost .block-like { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+.tab-cost .cost-tier-head { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+.tab-cost .cost-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.tab-cost .cost-chip { display: inline-flex; align-items: center; gap: 4px; background: var(--bg); border-radius: 999px; padding: 3px 6px 3px 10px; font-size: 12px; }
+.tab-cost .cost-chip input { width: 84px; padding: 3px 6px; text-align: right; }
+.tab-cost .cost-chip input[data-c$="discountPct"] { width: 56px; }
+.tab-cost .cost-tier-sum { font-size: 12px; background: var(--primary-soft); color: #1849A9; border-radius: 8px; padding: 8px 10px; }
+.tab-cost .cost-tier-sum:empty { display: none; }
+.tab-cost .cost-qtable tr.is-cur td { background: #F5F8FF; }
+.tab-cost .cost-qtable td { vertical-align: top; height: auto; }
+.tab-cost .cost-qbar { display: flex; align-items: center; gap: 8px; min-width: 220px; }
+.tab-cost .cost-qbar span { display: block; height: 10px; border-radius: 5px; flex: 0 0 auto; max-width: 70%; }
+.tab-cost .cost-qbar .is-cur { background: var(--primary); }
+.tab-cost .cost-qbar .is-other { background: #B2CCFF; }
+.tab-cost .cost-qbar .is-hatch { background: repeating-linear-gradient(45deg, #D0D5DD 0 4px, #F2F4F7 4px 8px); }
+.tab-cost .cost-m-ok { background: var(--primary-soft); color: var(--primary); }
+
+/* 환율 영향 — 슬라이더 트랙이 위험/안전 게이지 */
+.tab-cost .cost-fxrange { width: 100%; height: 10px; -webkit-appearance: none; appearance: none; border-radius: 5px; background: var(--fx-bg, var(--noted-bg)); margin: 6px 0 2px; }
+.tab-cost .cost-fxrange::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 3px solid #101828; cursor: pointer; }
+.tab-cost .cost-fxrange::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 3px solid #101828; cursor: pointer; }
+.tab-cost .cost-range-ends { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+.tab-cost .cost-fx-tiles { grid-template-columns: repeat(3, 1fr); }
+.tab-cost .cost-up { color: var(--block); }
+.tab-cost .cost-down { color: var(--primary); }
+.tab-cost .cost-fxchips { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px; font-size: 13px; }
+.tab-cost .cost-fxchip i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }

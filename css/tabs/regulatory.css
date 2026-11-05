@@ -1,11 +1,32 @@
-/* 📜 규제 확인 — .tab-reg 안에서만 */
-.tab-reg .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
-.tab-reg .reg-summary { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 16px; }
-.tab-reg .reg-sum-item { display: flex; align-items: center; gap: 6px; font-size: 15px; }
-.tab-reg .reg-3col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+/* 📜 규제 확인 — .tab-reg 안에서만. COSTD: 조회 방법 선택 → 추출값 확인·수정 → 조회 결과 */
+.tab-reg .reg-mode { margin-top: 14px; }
+.tab-reg .req { color: var(--block); }
+.tab-reg .reg-search-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; }
+.tab-reg .reg-q { position: relative; }
+.tab-reg .reg-suggest { position: absolute; top: 58px; left: 0; right: 0; z-index: 5; list-style: none; margin: 0; padding: 4px; background: #fff; border: 1px solid var(--line-strong); border-radius: 8px; box-shadow: 0 8px 20px rgba(16,24,40,.12); max-height: 280px; overflow-y: auto; }
+.tab-reg .reg-suggest button { width: 100%; text-align: left; border: none; background: none; font: inherit; font-weight: 400; color: var(--text); padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+.tab-reg .reg-suggest button:hover { background: var(--primary-soft); }
+.tab-reg .reg-sources { display: flex; flex-wrap: wrap; gap: 8px; }
+.tab-reg .reg-source { display: flex; align-items: center; gap: 6px; border: 1px solid var(--line-strong); border-radius: 8px; padding: 8px 12px; font-size: 13px; cursor: pointer; }
+.tab-reg .reg-source.on { border-color: var(--primary); background: var(--primary-soft); }
+.tab-reg .reg-flags { margin: 6px 0; }
+.tab-reg .reg-sheet { margin-top: 12px; padding: 12px; background: var(--bg); border-radius: 10px; }
+.tab-reg .reg-product { margin-bottom: 4px; }
+.tab-reg .reg-edit td { height: auto; vertical-align: top; }
+.tab-reg .reg-edit td.num input { text-align: right; max-width: 110px; }
+.tab-reg .reg-edit td:nth-child(4) input { max-width: 110px; }
 .tab-reg .reg-checklist { margin-top: 8px; padding: 10px 12px; background: var(--bg); border-radius: 8px; }
 .tab-reg .reg-checklist label.check { margin: 4px 0; }
-.tab-reg .reg-file { max-width: 420px; }
+.tab-reg .reg-3col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tab-reg .reg-results { display: flex; flex-direction: column; gap: 16px; scroll-margin-top: 70px; }
+.tab-reg .reg-results-head { display: flex; justify-content: space-between; align-items: center; }
+.tab-reg .reg-results-head h2 { margin: 0; }
+.tab-reg .reg-summary { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 16px; }
+.tab-reg .reg-sum-item { display: flex; align-items: center; gap: 6px; font-size: 15px; }
+.tab-reg .reg-cond { margin: 0; }
+.tab-reg .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+.tab-reg .reg-ref > summary { border-bottom: none; }
+.tab-reg .reg-ref[open] > summary { border-bottom: 1px solid var(--line); }
 .tab-reg .reg-compare td { vertical-align: top; }
 .tab-reg .reg-timeline { list-style: none; margin: 0; padding: 0 0 0 14px; border-left: 2px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
 .tab-reg .reg-tl-item { display: grid; grid-template-columns: 96px 170px 1fr; gap: 10px; align-items: center; position: relative; }
@@ -13,6 +34,3 @@
 .tab-reg .reg-tl-item.st-suspended::before { background: var(--block); }
 .tab-reg .reg-tl-item.st-draft::before { background: #fff; border: 2px dashed var(--unknown); }
 .tab-reg .reg-tl-date { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 13px; }
-.map-preview { margin-top: 10px; }
-.tab-reg input[type="search"] { width: 100%; box-sizing: border-box; padding: 6px 10px; border: 1px solid var(--line-strong); border-radius: 8px; margin: 6px 0 8px; font: inherit; font-size: 13px; }
-.tab-reg .chips { flex-wrap: wrap; margin-bottom: 4px; }

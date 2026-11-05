@@ -31,12 +31,12 @@ window.DASH_DATA.sampleCases = [
     id: 'C-2026-0001', sample: true, country: 'JP', buyerId: 'B-001', productId: 'P-002',
     stage: 'regulatory', createdAt: '2026-11-04', targetLaunchDate: '2027-06-01',
     regulatory: { category: 'ffc', claimInputs: { main: '임산부에게도 좋은 피부 보습' } },
-    request: {}, cost: {}, registration: {}
+    request: {}, cost: {}
   },
   {
     // 시나리오 B: 베트남 — 약국 체인 납품사 × 유산균 캡슐
     id: 'C-2026-0002', sample: true, country: 'VN', buyerId: 'B-002', productId: 'P-001',
-    stage: 'registration', createdAt: '2026-11-04', targetLaunchDate: '2027-04-01',
+    stage: 'agreed', createdAt: '2026-11-04', targetLaunchDate: '2027-04-01',
     regulatory: {
       claimInputs: {
         vnRegistered: 'Hỗ trợ tiêu hóa, giúp cân bằng hệ vi sinh đường ruột.',
@@ -44,25 +44,14 @@ window.DASH_DATA.sampleCases = [
         vnAd: 'Hỗ trợ tiêu hóa, chữa rối loạn tiêu hóa.'
       }
     },
-    request: {}, cost: {},
-    registration: {
-      plannedSubmitDate: '2026-12-01',
-      steps: [
-        { key: 'prepare', label: '서류 준비', status: 'doing', startedAt: '2026-11-01', doneAt: null },
-        { key: 'submit', label: '제출', status: 'todo' },
-        { key: 'query', label: '보완 요청 대응 (반복)', status: 'todo' },
-        { key: 'registered', label: '등록', status: 'todo' },
-        { key: 'adconfirm', label: '광고 내용 확인서', status: 'todo' }
-      ],
-      queries: [{ id: 'Q-1', receivedAt: '2026-12-10', answeredAt: null, note: '시험성적서 재제출 요청 (예시)' }]
-    }
+    request: { plannedSubmitDate: '2026-12-01' }, cost: {}
   },
   {
     // 시나리오 C: 미국 — 브랜드사 × 개별인정형 원료 포함 제품
     id: 'C-2026-0003', sample: true, country: 'US', buyerId: 'B-003', productId: 'P-003',
     stage: 'request', createdAt: '2026-11-04', targetLaunchDate: '2027-03-01',
     regulatory: { ndiConfirmed: true, claimInputs: { main: 'Supports joint comfort' } },
-    request: { ndiPlan: 'both', status: 'sent', sentAt: '2026-11-02' }, cost: {}, registration: {}
+    request: { ndiPlan: 'both', status: 'sent', sentAt: '2026-11-02' }, cost: {}
   }
 ];
 

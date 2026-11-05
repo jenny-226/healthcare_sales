@@ -64,5 +64,20 @@
     return fdaItems().filter(r => (r.product + ' ' + r.reason + ' ' + r.firm).toLowerCase().includes(t));
   }
 
-  DASH.services.reference = { krMatch, jpItems, jpSource, jpCandidates, jpSearch, fdaItems, fdaSource, fdaSearch };
+  // 성분명 자동완성 (COSTD: 2글자 이상 → 앞글자 일치 우선, 중복 제거 후 최대 10개)
+  function suggest(q, extra) {
+    const n = norm(q);
+    if (n.length < 2) return [];
+    const names = [];
+    const seen = new Set();
+    const push = (label, kind) => { const k = norm(label); if (k && !seen.has(k)) { seen.add(k); names.push({ label, kind, k }); } };
+    (extra || []).forEach(x => push(x, '처방'));
+    krAll().forEach(x => push(x.name, x.type === 'individual' ? '개별인정형' : '고시형'));
+    jpItems().forEach(x => push(x.name, '일본 의약품 전용'));
+    const starts = names.filter(x => x.k.startsWith(n));
+    const has = names.filter(x => !x.k.startsWith(n) && x.k.includes(n));
+    return starts.concat(has).slice(0, 10);
+  }
+
+  DASH.services.reference = { suggest, krMatch, jpItems, jpSource, jpCandidates, jpSearch, fdaItems, fdaSource, fdaSearch };
 })();

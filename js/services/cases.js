@@ -16,15 +16,19 @@
   }
 
   // ---------- 건 ----------
+  // 등록·신고 탭은 없앴다. 견적 합의 뒤 현지 절차는 바이어(명의자)가 진행한다 → 'agreed'
   const STAGES = [
     { id: 'regulatory', label: '규제 확인', tab: 'regulatory' },
     { id: 'request', label: '개발', tab: 'request' },
     { id: 'cost', label: '견적', tab: 'cost' },
-    { id: 'registration', label: '등록·신고', tab: 'registration' },
-    { id: 'selling', label: '판매', tab: 'registration' }
+    { id: 'agreed', label: '견적 합의', tab: 'cost' }
   ];
+  // 예전 저장 데이터의 단계(registration·selling)는 '견적 합의'로 읽는다
+  const LEGACY_STAGE = { registration: 'agreed', selling: 'agreed' };
 
-  function list() { return store.get('cases', []); }
+  function list() {
+    return store.get('cases', []).map(c => (LEGACY_STAGE[c.stage] ? Object.assign({}, c, { stage: LEGACY_STAGE[c.stage] }) : c));
+  }
   function get(id) { return list().find(c => c.id === id) || null; }
   function save(c) {
     const all = list();
@@ -48,16 +52,14 @@
       targetLaunchDate: fields.targetLaunchDate || '',
       regulatory: { claimInputs: {} },
       request: { status: 'draft' },
-      cost: {},
-      registration: {}
+      cost: {}
     };
     return save(c);
   }
 
-  // 등록·신고 단계가 시작된 건인지 (처방 변경 경고 기준)
+  // 견적이 합의되어 바이어가 현지 등록·신고를 진행하는 건인지 (처방 변경 경고 기준)
   function registrationStarted(c) {
-    const steps = (c.registration && c.registration.steps) || [];
-    return ['registration', 'selling'].includes(c.stage) || steps.some(s => s.status && s.status !== 'todo');
+    return c.stage === 'agreed' || !!LEGACY_STAGE[c.stage];
   }
 
   // README 7-3 처방 변경 경고 문구
@@ -77,16 +79,6 @@
       affected.push({ caseId: c.id, country: c.country, message: FORMULA_CHANGE_WARN[c.country] });
     });
     return affected;
-  }
-
-  // 국가 규칙 파일의 steps로 진행 트래커 단계를 만든다 (이미 있으면 그대로)
-  function ensureSteps(c) {
-    c.registration = c.registration || {};
-    if (c.registration.steps && c.registration.steps.length) return false;
-    const pack = DASH.services.rules.forCountry(c.country);
-    c.registration.steps = ((pack && pack.steps) || []).map(s => ({ key: s.key, label: s.label, status: 'todo', startedAt: null, doneAt: null }));
-    c.registration.queries = c.registration.queries || [];
-    return true;
   }
 
   // ---------- 바이어 ----------
@@ -151,6 +143,6 @@
   }
   function bremove(id) { store.set('buyers', blist().filter(b => b.id !== id)); }
 
-  DASH.services.cases = { STAGES, FORMULA_CHANGE_WARN, list, get, save, remove, create, registrationStarted, flagFormulaChange, ensureSteps };
+  DASH.services.cases = { STAGES, FORMULA_CHANGE_WARN, list, get, save, remove, create, registrationStarted, flagFormulaChange };
   DASH.services.buyers = { TYPES: BUYER_TYPES, CAPABILITIES, typeLabel, capabilityGaps, list: blist, get: bget, save: bsave, remove: bremove };
 })();

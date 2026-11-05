@@ -1,0 +1,5 @@
+{
+  "_instructions": "양식 예시입니다. 실제 균주로 교체하세요. studies 항목 형식은 db/README.md를 참고하세요. 모든 CFU는 1회 섭취량 기준입니다.",
+  "strains": [{ "id": "REPLACE-WITH-INTERNAL-ID", "name": "양식 예시 — 실제 균주명으로 교체" }],
+  "studies": []
+}

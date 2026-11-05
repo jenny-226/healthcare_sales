@@ -1,49 +1,71 @@
-/* 🏠 홈 — .tab-home 안에서만 */
-.tab-home .home-kanban { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
-.tab-home .home-col { background: var(--bg); border-radius: 10px; padding: 8px; display: flex; flex-direction: column; gap: 8px; min-height: 120px; }
-.tab-home .home-col-head { font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 6px; padding: 2px 4px; }
-.tab-home .home-col-empty { padding: 4px; }
-.tab-home .home-case { text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 10px; cursor: pointer; font: inherit; display: flex; flex-direction: column; gap: 4px; }
-.tab-home .home-case:hover { border-color: var(--primary); }
-.tab-home .home-case.selected { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-soft); }
-.tab-home .home-case-top { display: flex; gap: 4px; flex-wrap: wrap; }
-.tab-home .home-case-title { font-weight: 700; }
-.tab-home .home-case-foot { display: flex; flex-direction: column; gap: 2px; margin-top: 2px; }
+/* 🏠 홈 — .tab-home 안에서만. COSTD 홈 배치: 상단 정보 줄(환율 2/3 + 현지 시각 1/3) / 아래(수출입 카드 | 뉴스·규제) */
+.tab-home .home-top { display: flex; flex-direction: column; gap: 2px; }
+.tab-home .home-strip { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+.tab-home .home-body { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+.tab-home .home-col-left, .tab-home .home-col-right { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.tab-home .home-hint { font-size: 11px; color: var(--muted); margin: 8px 0 0; }
 
-.tab-home .home-tasks { display: flex; flex-direction: column; gap: 6px; max-height: 420px; overflow-y: auto; }
-.tab-home .home-task { display: flex; gap: 12px; align-items: flex-start; text-align: left; font: inherit; background: #fff; border: 1px solid var(--line); border-left-width: 4px; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
-.tab-home .home-task:hover { background: #F9FAFB; }
-.tab-home .home-task.t-over { border-left-color: var(--block); }
-.tab-home .home-task.t-soon { border-left-color: var(--action); }
-.tab-home .home-task.t-later { border-left-color: var(--line-strong); }
-.tab-home .home-task.t-wait { border-left-color: var(--primary); }
-.tab-home .home-task-date { min-width: 84px; font-size: 12px; font-weight: 600; text-align: center; }
-.tab-home .home-task-main { display: flex; flex-direction: column; gap: 2px; }
-.tab-home .home-task-label { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-weight: 500; }
+/* 환율 띠 */
+.tab-home .home-rates { padding: 14px 18px; }
+.tab-home .home-rates-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.tab-home .home-rates-items { display: grid; grid-template-columns: repeat(3, 1fr); }
+.tab-home .home-rate { display: flex; flex-direction: column; padding: 0 14px; border-left: 1px solid var(--line); }
+.tab-home .home-rate:first-child { padding-left: 0; border-left: none; }
+.tab-home .home-rate-code { font-size: 12px; color: var(--muted); font-weight: 600; }
+.tab-home .home-rate strong { font-size: 22px; font-variant-numeric: tabular-nums; }
+.tab-home .home-rate-chg { font-size: 11px; color: var(--muted); }
 
-.tab-home .home-clock { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
-.tab-home .home-clock:last-child { border-bottom: none; }
-.tab-home .home-clock-city { font-weight: 600; }
-.tab-home .home-clock-time { font-variant-numeric: tabular-nums; font-size: 13px; }
-.tab-home .home-clock-status { font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 6px; }
-.tab-home .s-work { background: var(--primary-soft); color: var(--primary); }
-.tab-home .s-off { background: var(--noted-bg); color: var(--muted); }
-.tab-home .s-weekend { background: #fff; color: var(--muted); border: 1px dashed var(--line-strong); }
+/* 바이어 현지 시각 */
+.tab-home .home-clock-card { padding: 14px 18px; }
+.tab-home .home-clock-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.tab-home .home-clock-tools { display: flex; align-items: center; gap: 4px; }
+.tab-home .home-clock-tools .seg-btn { padding: 4px 10px; font-size: 12px; }
+.tab-home .home-clock-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+.tab-home .home-clock { display: flex; flex-direction: column; padding: 0 10px; border-left: 1px solid var(--line); min-width: 0; }
+.tab-home .home-clock:first-child { padding-left: 0; border-left: none; }
+.tab-home .home-clock-city { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tab-home .home-clock-time { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); }
+.tab-home .home-clock-time.is-work { color: #079455; }
+.tab-home .home-clock-sub { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tab-home .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+.tab-home .dot-work { background: #079455; }
+.home-city-options { list-style: none; margin: 0; padding: 0; max-height: 320px; overflow-y: auto; }
+.home-city-options li { border-bottom: 1px solid var(--line); }
+input.block[data-city-search] { margin-bottom: 8px; }
 
-.tab-home .home-fx { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.tab-home .home-fx div { display: flex; flex-direction: column; background: var(--bg); border-radius: 8px; padding: 8px 10px; }
+/* 패널 공통 */
+.tab-home .home-panel { padding: 14px 18px; }
+.tab-home .home-panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.tab-home .home-panel-head h2 { font-size: 15px; margin: 0; }
+.tab-home .home-sub { font-size: 12px; color: var(--muted); font-weight: 500; margin-left: 4px; }
+.tab-home .home-meta { font-size: 11px; color: var(--muted); }
+.tab-home .home-panel-tools { display: flex; align-items: center; gap: 8px; }
+.tab-home .home-tcard { cursor: pointer; }
+.tab-home .home-tcard:hover { border-color: var(--primary); }
+.tab-home .home-tsum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tab-home .home-tsum div { display: flex; flex-direction: column; background: var(--bg); border-radius: 8px; padding: 8px 10px; }
+.tab-home .home-tsum strong { font-size: 20px; }
+.tab-home .home-pending { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 4px; }
 
-.tab-home .home-buyers { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-.tab-home .home-buyer { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
-.tab-home .home-buyer-top { display: flex; gap: 4px; flex-wrap: wrap; }
-.tab-home .home-buyer-name { font-weight: 700; font-size: 15px; }
-.tab-home .home-buyer .kv { margin: 2px 0; }
-.tab-home .home-buyer .warn-box { margin: 2px 0; width: 100%; }
+/* 수출 상위국 */
+.tab-home .home-rank { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.tab-home .home-rank li { display: grid; grid-template-columns: 110px 1fr 80px 48px; gap: 10px; align-items: center; font-size: 13px; }
+.tab-home .home-bar { height: 8px; background: var(--noted-bg); border-radius: 4px; overflow: hidden; }
+.tab-home .home-bar span { display: block; height: 100%; background: var(--primary); border-radius: 4px; }
+.tab-home .home-rank-val { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tab-home .home-rank-share { text-align: right; color: var(--muted); font-size: 12px; }
 
-.tab-home .home-alerts { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-.tab-home .home-alert { display: flex; flex-direction: column; gap: 2px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
-.tab-home .home-alert:last-child { border-bottom: none; }
+/* 뉴스·규제 */
+.tab-home .home-links { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.tab-home .home-links a { display: inline-block; font-size: 12px; padding: 3px 10px; border-radius: 999px; background: var(--bg); text-decoration: none; }
+.home-reg-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.home-reg-item { padding: 8px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
+.home-reg-item:last-child { border-bottom: none; }
+.home-reg-top { display: flex; gap: 4px; flex-wrap: wrap; }
+.home-reg-title { font-weight: 500; }
+.home-new { background: var(--block-bg); color: var(--block); }
 
-.tab-home .home-markets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.tab-home .home-market { border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
-.tab-home .home-market-num { font-size: 20px; font-weight: 700; margin: 6px 0 2px; }
+/* 수출 상세 모달 */
+.home-markets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.home-market { border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+.home-market-num { font-size: 20px; font-weight: 700; margin: 6px 0 2px; }

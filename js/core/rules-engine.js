@@ -134,7 +134,7 @@
       const doc = findDoc(x.docs, p.docType);
       if (!doc) return { status: 'fail', detail: `${docLabel(p.docType)} 없음` };
       if (!doc.issuedAt) return { status: 'fail', detail: '발급일이 입력되지 않았습니다.' };
-      const planned = (x.c.registration || {}).plannedSubmitDate;
+      const planned = (x.c.request || {}).plannedSubmitDate || (x.c.registration || {}).plannedSubmitDate;
       const submit = planned || x.today;
       const m = D.monthsBetween(doc.issuedAt, submit);
       const limit = D.addMonths(doc.issuedAt, p.months);
@@ -319,7 +319,7 @@
     });
   }
 
-  // 건 하나의 마감 목록 (등록·신고 트래커와 홈 '오늘 할 일'이 같이 사용)
+  // 건 하나의 마감 목록 (규제 확인 ⑤ 주요 마감에 사용)
   function deadlinesFor(c, product, docs, today) {
     today = today || D.today();
     const rs = R();
@@ -401,7 +401,7 @@
       deadlinesFor(c, product, docs, today).forEach(d => {
         if (d.done || d.info) return;
         if (d.alertDays && !d.flagged && D.daysUntil(d.date, today) > d.alertDays) return;
-        tasks.push({ date: d.date, label: d.label, caseId: c.id, country: c.country, tab: 'registration', caseName: name, ruleId: d.ruleId, sample: c.sample });
+        tasks.push({ date: d.date, label: d.label, caseId: c.id, country: c.country, tab: 'regulatory', caseName: name, ruleId: d.ruleId, sample: c.sample });
       });
       if (c.request && c.request.status === 'sent') {
         tasks.push({ date: c.request.sentAt || today, label: 'R&D 회신 대기 (개발요청서 발송됨)', caseId: c.id, country: c.country, tab: 'request', caseName: name, waiting: true, sample: c.sample });

@@ -98,8 +98,8 @@
     return `<div class="empty">
       <div class="empty-icon">📂</div>
       <h2>선택된 건이 없습니다</h2>
-      <p>홈에서 건을 선택하거나 새로 만드세요.</p>
-      <a class="btn primary" href="#home">홈으로 가기</a>
+      <p>상단 바에서 건을 고르거나 <strong>+ 새 건</strong>으로 만드세요.</p>
+      <button class="btn primary" type="button" data-act="empty-new-case">+ 새 건</button>
     </div>`;
   }
 
@@ -210,9 +210,21 @@
     return out;
   }
 
+  // COSTD식 구분 탭: items = [{value,label}], act = data-act 이름
+  function seg(items, active, act, opts) {
+    opts = opts || {};
+    return `<div class="seg${opts.cls ? ' ' + opts.cls : ''}" role="tablist">${items.map(i =>
+      `<button type="button" role="tab" class="seg-btn${i.value === active ? ' active' : ''}" aria-selected="${i.value === active}" data-act="${esc(act)}" data-v="${esc(i.value)}">${esc(i.label)}</button>`).join('')}</div>`;
+  }
+
+  // 페이지 제목 + 설명 (COSTD .page-title / .page-description)
+  function pageHead(title, desc, actions) {
+    return `<div class="page-head"><div><h1 class="page-title">${title}</h1>${desc ? `<p class="page-desc">${desc}</p>` : ''}</div>${actions ? `<div class="head-actions">${actions}</div>` : ''}</div>`;
+  }
+
   DASH.ui = {
     VERDICTS, RANK, COUNTRIES, FORMS,
     esc, badge, countryBadge, sampleBadge, verifyBadge, tag, card, table, sourceLine, findingCard, worst, options,
-    emptyCase, modal, confirmBox, toast, num, krw, usd, dday, printHtml, download, copyText, readForm
+    emptyCase, seg, pageHead, modal, confirmBox, toast, num, krw, usd, dday, printHtml, download, copyText, readForm
   };
 })();
