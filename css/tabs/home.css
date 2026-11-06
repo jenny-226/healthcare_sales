@@ -8,7 +8,7 @@
 /* 환율 띠 */
 .tab-home .home-rates { padding: 14px 18px; }
 .tab-home .home-rates-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 10px; }
-.tab-home .home-rates-items { display: grid; grid-template-columns: repeat(3, 1fr); }
+.tab-home .home-rates-items { display: grid; grid-template-columns: repeat(4, 1fr); }
 .tab-home .home-rate { display: flex; flex-direction: column; padding: 0 14px; border-left: 1px solid var(--line); }
 .tab-home .home-rate:first-child { padding-left: 0; border-left: none; }
 .tab-home .home-rate-code { font-size: 12px; color: var(--muted); font-weight: 600; }

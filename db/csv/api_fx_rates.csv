@@ -1,4 +1,6 @@
 ﻿date,currency,krw_per_unit,rate_type,source
-2026-11-05,JPY,8.463817,mid (KRW 기준 역산),ExchangeRate-API (open.er-api.com)
-2026-11-05,USD,1340.482574,mid (KRW 기준 역산),ExchangeRate-API (open.er-api.com)
-2026-11-05,VND,0.052164,mid (KRW 기준 역산),ExchangeRate-API (open.er-api.com)
+2026-11-06,USD,1347.708895,mid (KRW 기준 역산),ExchangeRate-API (open.er-api.com)
+2026-11-06,JPY,8.504775,mid (KRW 기준 역산),ExchangeRate-API (open.er-api.com)
+2026-11-06,CNY,200.521356,mid (KRW 기준 역산),ExchangeRate-API (open.er-api.com)
+2026-11-06,EUR,1510.574018,mid (KRW 기준 역산),ExchangeRate-API (open.er-api.com)
+2026-11-06,VND,0.052626,mid (KRW 기준 역산),ExchangeRate-API (open.er-api.com)

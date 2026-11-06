@@ -105,7 +105,7 @@ CREATE TABLE api_holidays (            -- Nager.Date (영업일 계산, README 9
 CREATE INDEX idx_holidays ON api_holidays(country, date);
 
 CREATE TABLE api_fx_rates (            -- 외화 1단위당 원화
-  date TEXT NOT NULL, currency TEXT NOT NULL CHECK (currency IN ('USD','JPY','VND')),
+  date TEXT NOT NULL, currency TEXT NOT NULL CHECK (currency IN ('USD','JPY','CNY','EUR','VND')),
   krw_per_unit REAL NOT NULL, rate_type TEXT, source TEXT,
   PRIMARY KEY (date, currency, source)
 );

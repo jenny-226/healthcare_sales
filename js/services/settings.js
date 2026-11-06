@@ -7,7 +7,7 @@
   // 환율: 외화 1단위당 원화. 원가 탭에서 직접 입력한 값 → 없으면 DB 기준 환율(data/fx-rates.js)
   function dbFx() {
     const r = window.DASH_DATA && window.DASH_DATA.fxRates;
-    return r ? { USD: r.USD || 0, JPY: r.JPY || 0, VND: r.VND || 0, date: r.date || '', source: r.source || 'DB', fromDb: true } : null;
+    return r ? { USD: r.USD || 0, JPY: r.JPY || 0, CNY: r.CNY || 0, EUR: r.EUR || 0, VND: r.VND || 0, date: r.date || '', source: r.source || 'DB', fromDb: true } : null;
   }
   function fx() {
     const saved = store.get('settings:fx', null);

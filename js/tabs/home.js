@@ -79,10 +79,15 @@
   // ---------- 환율 띠 ----------
   function ratesCard() {
     const fx = S.settings.fx();
+    // 무역 결제 통화만 보인다. 베트남 거래도 보통 달러로 결제하므로 VND는 띠에서 뺐다.
+    // 원가 탭 직접 입력값에는 CNY·EUR이 없으므로 그때는 DB 기준 환율을 쓴다.
+    const db = S.settings.dbFx() || {};
+    const pick = code => fx[code] || db[code] || 0;
     const items = [
-      { code: 'USD', unit: '', v: fx.USD },
-      { code: 'JPY', unit: '(100)', v: fx.JPY * 100 },
-      { code: 'VND', unit: '(1,000)', v: fx.VND * 1000 }
+      { code: 'USD', unit: '', v: pick('USD') },
+      { code: 'CNY', unit: '', v: pick('CNY') },
+      { code: 'JPY', unit: '(100)', v: pick('JPY') * 100 },
+      { code: 'EUR', unit: '', v: pick('EUR') }
     ];
     const body = S.settings.fxReady()
       ? items.map(i => `<div class="home-rate"><span class="home-rate-code">${esc(i.code)} <small>${esc(i.unit)}</small></span>
