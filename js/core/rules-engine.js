@@ -72,7 +72,7 @@
       if (hit.length) return { status: 'fail', detail: '해당 성분: ' + hit.map(name).join(', ') };
       const unset = p.unsetAsFalse ? [] : f.filter(i => i[p.flag] !== true && i[p.flag] !== false);
       if (unset.length) {
-        return { status: 'unknown', detail: '판단 데이터 미입력 성분: ' + unset.map(name).join(', ') + ' — 성분별 해당/비해당을 사람이 입력하세요.' };
+        return { status: 'unknown', detail: '목록 대조로 판단하지 못한 성분: ' + unset.map(name).join(', ') + ' — 이름 대조 불가 또는 사용 부위 확인 필요 (규제 확인 탭의 성분 판정 표 참고)' };
       }
       return { status: 'pass', detail: '입력된 성분 플래그 기준으로 해당 성분 없음' };
     },
@@ -171,7 +171,7 @@
 
     claimTerms(rule, x) {
       const text = claimText(x.reg, rule.params.fields);
-      if (!text) return { status: 'input', detail: '점검할 문구를 입력하세요.' };
+      if (!text) return { status: 'input', detail: '점검할 표시 문구가 없습니다 — 개발요청서의 허용 표현 초안을 채우면 자동으로 점검해요.' };
       const terms = R().claimTerms(x.country)[rule.params.list] || [];
       const hits = findTerms(text, terms);
       if (hits.length) {
@@ -196,7 +196,7 @@
 
     disclaimer(rule, x) {
       const text = claimText(x.reg, rule.params.fields);
-      if (!text) return { status: 'input', detail: '점검할 문구를 입력하세요.' };
+      if (!text) return { status: 'input', detail: '점검할 표시 문구가 없습니다 — 개발요청서의 허용 표현 초안을 채우면 자동으로 점검해요.' };
       if (text.toLowerCase().includes('not been evaluated by the food and drug administration')) {
         return { status: 'pass', detail: '면책 문구 포함됨 — 라벨에서 굵게 표시되는지 확인' };
       }
@@ -207,7 +207,7 @@
       const p = rule.params;
       const ci = x.reg.claimInputs || {};
       const [reg, label, ad] = p.fields.map(f => (ci[f] || '').trim());
-      if (!reg && !label && !ad) return { status: 'input', detail: '등록 문구·라벨·광고 문구를 입력하세요.' };
+      if (!reg && !label && !ad) return { status: 'input', detail: '점검할 표시 문구가 없습니다 — 개발요청서의 허용 표현 초안을 채우면 자동으로 점검해요.' };
       const norm = s => s.replace(/\s+/g, ' ').trim().toLowerCase();
       const problems = [];
       if (!reg) problems.push('등록 문구 미입력');
@@ -233,7 +233,7 @@
     let verdict, message;
     if (r.status === 'fail') { verdict = r.verdict || rule.verdictIfFail; message = rule.message; }
     else if (r.status === 'pass') { verdict = 'NOTED'; message = '등록된 규칙에 걸린 항목이 없습니다. (승인 아님 — 최종 판단은 규제 담당·바이어)'; }
-    else if (r.status === 'input') { verdict = 'REVIEW'; message = '입력값이 없어 점검하지 못했습니다.'; }
+    else if (r.status === 'input') { verdict = 'REVIEW'; message = '점검할 정보가 없어 확인하지 못했습니다.'; }
     else { verdict = 'UNKNOWN'; message = '규칙 미등록 — 수동 확인 필요'; }
     return {
       ruleId: rule.id, country: rule.country, area: rule.area, title: rule.title,

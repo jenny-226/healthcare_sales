@@ -129,7 +129,7 @@
   function sec02(c, product, rq, conds) {
     const draft = val(rq, 'allowedClaimDraft', claimDraftDefault(c));
     let condHtml;
-    if (!conds) condHtml = '<p class="note warn">규제 확인 탭에서 <strong>확정 성분 규제 조회</strong>를 먼저 하세요. 결과가 있어야 국가 조건이 자동으로 들어옵니다. <a href="#regulatory">규제 확인으로</a></p>';
+    if (!conds) condHtml = '<p class="note warn">규제 확인 탭을 열면 자동으로 조회돼요. 결과가 있어야 국가 조건이 자동으로 들어옵니다. <a href="#regulatory">규제 확인으로</a></p>';
     else {
       condHtml = `<ul class="req-conds">${conds.map(x => `<li>${badge(x.verdict)} ${esc(x.text)} <span class="rule-id">${esc(x.ruleId)}</span></li>`).join('')}</ul>`;
       if (c.country === 'US') {
@@ -154,7 +154,7 @@
   function sec03(c, product, rq, conds) {
     const name = S.products.ingredientName;
     const legalBan = (conds || []).filter(x => x.verdict === 'BLOCK' && x.key !== 'us-claim');
-    const base = table(['성분', '1회 함량'], (product.formula || []).map(i => [esc(name(i)), `${esc(i.amountPerServing)} ${esc(i.unit)}`]), { empty: '처방 성분이 없습니다. 규제 확인 탭에서 입력하세요.' });
+    const base = table(['성분', '1회 함량'], (product.formula || []).map(i => [esc(name(i)), `${esc(i.amountPerServing)} ${esc(i.unit)}`]), { empty: '처방 성분이 없습니다. 규제 확인 탭에서 성분표 파일을 올리세요.' });
     const ingOpts = [{ value: '', label: '(새 원료)' }].concat((product.formula || []).map(i => ({ value: i.ingredientId, label: name(i) })));
     const rows = (rq.countryVariant || []).map((v, i) => [
       `<select data-cv="${i}" data-k="ingredientId">${options(ingOpts, v.ingredientId || '')}</select>`,

@@ -1,23 +1,31 @@
-/* 📜 규제 확인 — .tab-reg 안에서만. COSTD: 조회 방법 선택 → 추출값 확인·수정 → 조회 결과 */
-.tab-reg .reg-mode { margin-top: 14px; }
-.tab-reg .req { color: var(--block); }
-.tab-reg .reg-search-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; }
+/* 📜 규제 확인 — .tab-reg 안에서만. 성분 의약품 해당 여부 → 이 제품 성분 판정 → 판단 항목 → 조회 결과 */
+.tab-reg .reg-searchbar { display: grid; grid-template-columns: 2fr 1fr auto; gap: 12px; align-items: end; }
+.tab-reg .reg-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
+.tab-reg .reg-chips .muted { margin-right: 4px; }
+.tab-reg .reg-verdict { margin-top: 14px; border-left: 4px solid var(--line-strong); border-radius: 10px; padding: 12px 16px; }
+.tab-reg .reg-verdict p { margin: 6px 0 0; }
+.tab-reg .reg-verdict-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 15px; }
+.tab-reg .reg-evidence { margin-top: 10px; }
+.tab-reg .reg-fold { margin-top: 8px; padding: 8px 12px; background: var(--bg); border-radius: 8px; }
+.tab-reg .reg-fold > summary { font-weight: 500; font-size: 13px; }
+.tab-reg .reg-ing td { vertical-align: top; }
+.tab-reg .reg-ing .link-btn { font-size: 13px; text-decoration: none; text-align: left; color: var(--text); }
+.tab-reg .reg-ing .link-btn:hover { color: var(--primary); text-decoration: underline; }
+.tab-reg .reg-part-btns { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.tab-reg .reg-part-btns .btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+.tab-reg .reg-upload-inline { margin-top: 10px; }
+.tab-reg .dropzone.compact { flex-direction: row; padding: 12px 16px; font-size: 13px; }
+.tab-reg .reg-sheet-head { margin-bottom: 8px; }
+.tab-reg .reg-claim { margin: 0; padding: 10px 12px; background: var(--bg); border-left: 3px solid var(--line-strong); border-radius: 6px; white-space: pre-wrap; font-size: 13px; }
+@media (max-width: 720px) { .tab-reg .reg-searchbar { grid-template-columns: 1fr; } }
 .tab-reg .reg-q { position: relative; }
 .tab-reg .reg-suggest { position: absolute; top: 58px; left: 0; right: 0; z-index: 5; list-style: none; margin: 0; padding: 4px; background: #fff; border: 1px solid var(--line-strong); border-radius: 8px; box-shadow: 0 8px 20px rgba(16,24,40,.12); max-height: 280px; overflow-y: auto; }
 .tab-reg .reg-suggest button { width: 100%; text-align: left; border: none; background: none; font: inherit; font-weight: 400; color: var(--text); padding: 6px 10px; border-radius: 6px; cursor: pointer; }
 .tab-reg .reg-suggest button:hover { background: var(--primary-soft); }
-.tab-reg .reg-sources { display: flex; flex-wrap: wrap; gap: 8px; }
-.tab-reg .reg-source { display: flex; align-items: center; gap: 6px; border: 1px solid var(--line-strong); border-radius: 8px; padding: 8px 12px; font-size: 13px; cursor: pointer; }
-.tab-reg .reg-source.on { border-color: var(--primary); background: var(--primary-soft); }
 .tab-reg .reg-flags { margin: 6px 0; }
 .tab-reg .reg-sheet { margin-top: 12px; padding: 12px; background: var(--bg); border-radius: 10px; }
-.tab-reg .reg-product { margin-bottom: 4px; }
-.tab-reg .reg-edit td { height: auto; vertical-align: top; }
-.tab-reg .reg-edit td.num input { text-align: right; max-width: 110px; }
-.tab-reg .reg-edit td:nth-child(4) input { max-width: 110px; }
 .tab-reg .reg-checklist { margin-top: 8px; padding: 10px 12px; background: var(--bg); border-radius: 8px; }
 .tab-reg .reg-checklist label.check { margin: 4px 0; }
-.tab-reg .reg-3col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .tab-reg .reg-results { display: flex; flex-direction: column; gap: 16px; scroll-margin-top: 70px; }
 .tab-reg .reg-results-head { display: flex; justify-content: space-between; align-items: center; }
 .tab-reg .reg-results-head h2 { margin: 0; }
