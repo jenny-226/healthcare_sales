@@ -2,7 +2,7 @@
 .tab-req .req { color: var(--block); }
 .tab-req .req-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
 .tab-req .req-main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-.tab-req .req-side { position: sticky; top: 76px; }
+.tab-req .req-side { position: sticky; top: 16px; }
 .tab-req .req-side-actions { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
 .tab-req .req-side-actions .btn { justify-content: center; }
 .tab-req .req-tiles { grid-template-columns: 1fr 1fr; margin-bottom: 8px; }

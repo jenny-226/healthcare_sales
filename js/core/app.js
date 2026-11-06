@@ -1,4 +1,4 @@
-// 탭 등록·전환, 해시 라우팅(#home, #regulatory ...), 상단 건 선택 바, 베트남 규정 배너.
+// 탭 등록·전환, 해시 라우팅(#home, #regulatory ...), 베트남 규정 배너.
 (function () {
   const DASH = window.DASH = window.DASH || {};
   const tabs = [];
@@ -49,27 +49,16 @@
     document.getElementById('nav').innerHTML = tabs.map(item).join('');
   }
 
-  function renderCaseBar() {
-    const { esc } = DASH.ui;
+  // 상단 건 선택 바는 없앴다. 건은 바이어 발굴 탭에서 열고, 건이 필요한 탭은 마지막으로 연 건을 보여준다.
+  // 선택된 건이 없으면 가장 최근 건을 자동으로 고른다.
+  function ensureCase() {
+    let ctx = DASH.caseContext.get();
+    if (ctx) return ctx;
     const cases = DASH.services.cases.list();
-    const cur = DASH.caseContext.currentId();
-    const el = document.getElementById('casebar');
-    el.innerHTML = `
-      <label class="casebar-label" for="case-select">현재 건</label>
-      <select id="case-select" class="casebar-select">
-        <option value="">— 건을 선택하세요 —</option>
-        ${cases.map(c => `<option value="${esc(c.id)}"${c.id === cur ? ' selected' : ''}>${esc(c.id)} · ${esc(caseLabel(c))}</option>`).join('')}
-      </select>
-      <button class="btn primary" data-act="new-case">+ 새 건</button>
-      <button class="btn" data-act="manage">건·바이어 관리</button>
-      <span class="casebar-spacer"></span>
-      <span class="casebar-note" title="화면의 모든 판정은 1차 참고용입니다. 최종 판단은 규제 담당과 현지 바이어(명의자)가 합니다.">⚠️ 사전검토 보조 도구</span>`;
-    el.querySelector('#case-select').addEventListener('change', e => {
-      if (e.target.value) DASH.caseContext.select(e.target.value);
-      else DASH.caseContext.clear();
-    });
-    el.querySelector('[data-act="new-case"]').addEventListener('click', () => DASH.manager.openNewCase());
-    el.querySelector('[data-act="manage"]').addEventListener('click', () => DASH.manager.openManager());
+    if (!cases.length) return null;
+    ctx = cases[cases.length - 1];
+    DASH.store.set('ui:currentCase', ctx.id);
+    return ctx;
   }
 
   // README 7-0: VN 건을 열면 모든 탭 상단에 VN-LAW-01 배너 고정
@@ -94,14 +83,14 @@
     const def = tabById(activeId);
     DASH.store.set('ui:lastTab', activeId);
     const root = document.getElementById('tab-root');
-    const ctx = DASH.caseContext.get();
+    const ctx = def.needsCase ? ensureCase() : DASH.caseContext.get();
     root.className = 'tab-root ' + (def.cssClass || '');
     renderNav();
     renderBanner(ctx, def);
     document.title = `${def.label} · 건기식 해외영업 대시보드`;
     if (def.needsCase && !ctx) {
       root.innerHTML = DASH.ui.emptyCase();
-      root.querySelector('[data-act="empty-new-case"]').addEventListener('click', () => DASH.manager.openNewCase());
+      root.querySelector('[data-act="empty-to-buyers"]').addEventListener('click', () => DASH.go('buyers'));
       return;
     }
     try {
@@ -115,7 +104,6 @@
   function refresh() {
     const main = document.querySelector('.main');
     const y = main ? main.scrollTop : 0;
-    renderCaseBar();
     renderTab();
     if (main) main.scrollTop = y;
   }
@@ -125,10 +113,10 @@
     DASH.store.seedIfNeeded();
     window.addEventListener('hashchange', () => { renderTab(); document.querySelector('.main').scrollTop = 0; });
     document.addEventListener('case:changed', e => {
-      if (e.detail && e.detail.reason === 'select') { renderCaseBar(); renderTab(); }
+      if (e.detail && e.detail.reason === 'select') renderTab();
       else refresh();
     });
-    renderCaseBar();
+    document.querySelector('[data-act="open-manager"]').addEventListener('click', () => DASH.manager.openManager());
     renderTab();
   });
 })();

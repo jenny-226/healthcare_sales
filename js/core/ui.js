@@ -97,9 +97,9 @@
   function emptyCase() {
     return `<div class="empty">
       <div class="empty-icon">📂</div>
-      <h2>선택된 건이 없습니다</h2>
-      <p>상단 바에서 건을 고르거나 <strong>+ 새 건</strong>으로 만드세요.</p>
-      <button class="btn primary" type="button" data-act="empty-new-case">+ 새 건</button>
+      <h2>아직 진행 중인 건이 없습니다</h2>
+      <p>바이어 발굴 탭의 영업 관리에서 바이어를 <strong>건으로 전환</strong>하면 여기에 내용이 나옵니다.</p>
+      <button class="btn primary" type="button" data-act="empty-to-buyers">바이어 발굴로 가기</button>
     </div>`;
   }
 

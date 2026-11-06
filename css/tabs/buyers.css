@@ -52,7 +52,7 @@
 .tab-byr .byr-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
 .tab-byr .byr-warn { color: #B54708; }
 
-.tab-byr .byr-detail { position: sticky; top: 72px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 12px; max-height: calc(100vh - 90px); overflow-y: auto; }
+.tab-byr .byr-detail { position: sticky; top: 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 12px; max-height: calc(100vh - 32px); overflow-y: auto; }
 .tab-byr .byr-detail-empty { padding: 40px 12px; }
 .tab-byr .byr-dhead { display: flex; gap: 10px; align-items: center; }
 .tab-byr .byr-dhead .byr-av { width: 40px; height: 40px; font-size: 14px; border-radius: 10px; }

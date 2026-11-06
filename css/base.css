@@ -55,14 +55,12 @@ pre { white-space: pre-wrap; font-family: inherit; margin: 0; }
 .nav-label { flex: 1; }
 .nav-count { background: rgba(255,255,255,.18); color: #fff; font-size: 11px; padding: 1px 7px; border-radius: 10px; }
 .nav-sep { height: 1px; background: #344054; margin: 14px 8px; }
+.sidebar-link { margin-top: auto; background: none; border: 1px solid #344054; color: #D0D5DD; border-radius: 8px; padding: 8px 10px; font: inherit; font-size: 12px; text-align: left; cursor: pointer; }
+.sidebar-link:hover { background: #1D2939; color: #fff; }
+.sidebar-link + .sidebar-note { margin-top: 0; }
 .sidebar-note { margin-top: auto; font-size: 11px; color: #98A2B3; padding: 12px 8px 0; line-height: 1.5; }
 
 .main { overflow-y: auto; display: flex; flex-direction: column; }
-.casebar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px; padding: 12px 24px; background: var(--card); border-bottom: 1px solid var(--line); }
-.casebar-label { font-weight: 600; color: var(--muted); font-size: 13px; }
-.casebar-select { min-width: 460px; max-width: 640px; }
-.casebar-spacer { flex: 1; }
-.casebar-note { font-size: 12px; color: var(--muted); cursor: help; }
 .tab-root { padding: 20px 24px 48px; }
 .tab-page { display: flex; flex-direction: column; gap: 16px; max-width: 1440px; }
 
