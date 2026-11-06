@@ -148,6 +148,11 @@ CREATE TABLE api_export_stats (              -- 관세청 품목별 국가별 �
   basis TEXT, fetched_at TEXT
 );
 
+CREATE TABLE api_comtrade_imports (          -- UN Comtrade (public preview): 국가별 건기식(HS 210690) 연간 수입액
+  reporter TEXT, year TEXT, partner TEXT,    -- reporter: JP/VN/US, partner: WORLD/KR
+  hs_code TEXT, flow TEXT, value_usd REAL, net_kg REAL, hs_version TEXT, fetched_at TEXT
+);
+
 CREATE TABLE api_fetch_log (
   dataset TEXT, rows INTEGER, source TEXT, note TEXT, fetched_at TEXT
 );

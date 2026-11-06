@@ -1,6 +1,6 @@
 // 📜 규제 확인 (README 7-2) — 확인용 화면. 실무자가 값을 일일이 입력하지 않는다.
-//   ① 성분 의약품 해당 여부: 성분명 + 국가 → DB 사본 전체(일본 목록·식약처 원료·FDA 리콜·대조표)를 한 번에 대조
-//   ② 이 제품 성분 판정: 처방 성분을 자동 판정 (처방은 성분표 파일로 불러옴)
+//   ① DB 검색: 성분명 + 국가 → DB 사본 전체(일본 목록·식약처 원료·FDA 리콜·대조표)를 한 번에 대조
+//      제품명(DB에 저장된 제품) → 검색 결과로 '제품 성분 판정' 표를 띄움 (처방은 그 결과 안에서 성분표 파일로 불러옴)
 //   ③ 판단 항목: 클릭으로만 고르는 조건 (분류·NDI·체크리스트) + 점검한 표시 문구(개발요청서에서 가져옴)
 //   ④ 조회 결과: 규칙 엔진을 자동 실행 → 요약 → 영역별 판정 → 필요 서류·주요 마감
 //   ⑤ 참고: 세 나라 비교표 · 규제 변화 타임라인 (접힘)
@@ -44,7 +44,6 @@
       <div class="info-note">일본 의약품 전용 성분·식약처 원료·FDA 리콜·국가 규칙을 한 번에 대조해요. '목록에 없음'·'규칙 확인됨'은 등록된 목록·규칙에 걸린 것이 없다는 뜻이며 승인이 아닙니다.</div>
 
       ${searchCard(c, product)}
-      ${formulaCard(c, product)}
       ${conditionCard(c, product, pack)}
       ${resultsSection(c, product, pack)}
       ${referenceSection(c, product)}
@@ -121,11 +120,13 @@
   // ---------- ① 성분 의약품 해당 여부 ----------
   function searchCard(c, product) {
     const s = work.search || { q: '', market: c.country };
-    const chips = (product.formula || []).map((i, idx) => `<button type="button" class="chip" data-act="pick-ing" data-i="${idx}">${esc(i.nameKo || i.nameEn)}</button>`).join('');
-    return card('성분 의약품 해당 여부', `
+    const empty = !(product.formula || []).length;
+    const productChip = `<button type="button" class="chip" data-act="pick-product" data-p="${esc(product.id)}">📦 ${esc(product.name)} 성분 판정${empty ? ' (처방 없음 · 성분표 올리기)' : ''}</button>`;
+    const chips = productChip + (product.formula || []).map((i, idx) => `<button type="button" class="chip" data-act="pick-ing" data-p="${esc(product.id)}" data-i="${idx}">${esc(i.nameKo || i.nameEn)}</button>`).join('');
+    return card('성분·제품 DB 검색', `
       <div class="reg-searchbar">
-        <label class="block reg-q"><span>성분명</span>
-          <input data-s="q" value="${esc(s.q)}" placeholder="한글명·영문명·학명 (예: 타우린, 녹용, Ashwagandha)" autocomplete="off">
+        <label class="block reg-q"><span>성분명 또는 제품명</span>
+          <input data-s="q" value="${esc(s.q)}" placeholder="성분 (예: 타우린, 녹용, Ashwagandha) 또는 DB에 저장된 제품명" autocomplete="off">
           <ul class="reg-suggest" data-out="suggest" hidden></ul>
         </label>
         <label class="block"><span>국가</span>
@@ -133,8 +134,29 @@
         </label>
         <button class="btn primary" data-act="search">확인</button>
       </div>
-      ${chips ? `<div class="reg-chips"><span class="muted small">이 제품 성분 바로 확인</span>${chips}</div>` : ''}
-      <div data-out="search-result">${s.done ? pharmaResult(s) : ''}</div>`);
+      <div class="reg-chips"><span class="muted small">이 건 바로 확인</span>${chips}</div>
+      <div data-out="search-result">${s.done ? searchResult(s, c) : ''}</div>`);
+  }
+
+  // 검색 결과: 제품이면 성분 판정표, 아니면 성분 의약품 해당 여부
+  function searchResult(s, c) {
+    const p = s.productId && S.products.get(s.productId);
+    return p ? productResult(p, s.market, c) : pharmaResult(s);
+  }
+
+  // DB에 저장된 제품 찾기: 이름이 같으면 바로, 일부만 같으면 하나뿐이고 성분으로 인식되지 않을 때만
+  function normName(x) { return String(x || '').toLowerCase().replace(/[^0-9a-z가-힣ぁ-んァ-ヶー一-龯]/g, ''); }
+  function findProduct(q) {
+    const n = normName(q);
+    if (n.length < 2) return null;
+    const all = S.products.list();
+    const exact = all.find(p => normName(p.name) === n);
+    if (exact) return exact;
+    const part = all.filter(p => normName(p.name).includes(n));
+    if (part.length !== 1) return null;
+    const r = look(q);
+    const isIngredient = r.recognized || r.kr.length || r.jpHits.length || r.krStatus !== 'none';
+    return isIngredient ? null : part[0];
   }
 
   // 국가별 '의약품 해당 여부' 판정 (목록 데이터가 있는 나라만 판정하고, 없으면 미등록으로 표시)
@@ -198,12 +220,12 @@
     }
     return r.recognized ? tag('목록에 없음', 'v-noted') : tag('대조 불가', 'v-unknown');
   }
-  function todoCell(i, r, country, idx) {
+  function todoCell(i, r, country, idx, pid) {
     const out = [];
     if (country === 'JP' && r.jp === 'partial') {
       out.push(`<div class="reg-part-btns"><span class="small">사용 부위가 목록 부위인가요?</span>
-        <button class="btn sm${i.jpPharmaBy === 'user' && i.jpPharmaOnly ? ' active' : ''}" data-act="jp-part" data-i="${idx}" data-v="yes">예</button>
-        <button class="btn sm${i.jpPharmaBy === 'user' && i.jpPharmaOnly === false ? ' active' : ''}" data-act="jp-part" data-i="${idx}" data-v="no">아니요</button></div>`);
+        <button class="btn sm${i.jpPharmaBy === 'user' && i.jpPharmaOnly ? ' active' : ''}" data-act="jp-part" data-p="${esc(pid)}" data-i="${idx}" data-v="yes">예</button>
+        <button class="btn sm${i.jpPharmaBy === 'user' && i.jpPharmaOnly === false ? ' active' : ''}" data-act="jp-part" data-p="${esc(pid)}" data-i="${idx}" data-v="no">아니요</button></div>`);
     }
     if (country === 'JP' && r.jp === 'listed') out.push('일본 판매 시 원료 교체 검토 (JP-ING-01)');
     if (country === 'JP' && r.jp === 'none' && !r.recognized) out.push('영문명·학명 확인 필요');
@@ -217,36 +239,38 @@
     return list.map((i, idx) => {
       const r = look(i);
       return [
-        withActions ? `<button type="button" class="link-btn" data-act="pick-ing" data-i="${idx}"><strong>${esc(S.products.ingredientName(i))}</strong></button>` : `<strong>${esc(S.products.ingredientName(i))}</strong>`,
+        withActions ? `<button type="button" class="link-btn" data-act="pick-ing" data-p="${esc(product.id)}" data-i="${idx}"><strong>${esc(S.products.ingredientName(i))}</strong></button>` : `<strong>${esc(S.products.ingredientName(i))}</strong>`,
         `${esc(i.amountPerServing)} ${esc(i.unit)}`,
         `${esc(num((Number(i.amountPerServing) || 0) * spd, 3))} ${esc(i.unit)}`,
         pharmaCell(i, r, country),
         r.krStatus !== 'none' ? tag(KR_LABEL[r.krStatus], 'b-plain') : (r.kr.length ? `<span class="small muted">비슷한 이름: ${esc(r.kr.map(x => x.name).join(', '))}</span>` : '<span class="muted small">목록에 없음</span>'),
-        withActions ? todoCell(i, r, country, idx) : ''
+        withActions ? todoCell(i, r, country, idx, product.id) : ''
       ];
     });
   }
 
-  function formulaCard(c, product) {
+  // 검색 결과: DB에 저장된 제품의 성분 판정표 (이 건의 제품이면 성분표 파일로 처방을 바꿀 수 있음)
+  function productResult(product, market, c) {
     const formula = product.formula || [];
+    const own = product.id === c.productId;
     const meta = `${esc(FORMS[product.form] || product.form)} · 1회 ${esc(product.unitsPerServing || 1)}개 × 1일 ${esc(product.servingsPerDay || 1)}회`;
-    const heads = ['성분', '1회 함량', '1일 섭취량', `의약품 해당 (${COUNTRIES[c.country].name})`, '한국 원료 구분', '확인할 것'];
+    const heads = ['성분', '1회 함량', '1일 섭취량', `의약품 해당 (${COUNTRIES[market].name})`, '한국 원료 구분', '확인할 것'];
     const body = formula.length
-      ? table(heads, ingredientRows(formula, c.country, product, true), { cls: 'reg-ing' })
-      : '<div class="empty-inline">처방 성분이 없어요. 아래에 성분표 파일(XLSX·CSV)을 올리면 자동으로 판정해요.</div>';
-    return card(`이 제품 성분 판정 <span class="muted small">${esc(product.name)} · ${meta}</span>`, `
+      ? table(heads, ingredientRows(formula, market, product, true), { cls: 'reg-ing' })
+      : `<div class="empty-inline">처방 성분이 없어요.${own ? ' 아래에 성분표 파일(XLSX·CSV)을 올리면 자동으로 판정해요.' : ''}</div>`;
+    return `<div class="reg-verdict-head"><strong>📦 ${esc(product.name)}</strong> <span class="muted small">${esc(product.id)} · ${meta} · ${esc(COUNTRIES[market].name)} 기준</span></div>
       ${body}
-      <p class="muted small">의약품 해당·한국 원료 구분은 DB 사본과 이름 대조로 자동 판정해요. 이름 대조 결과는 후보이므로 최종 판단은 규제 담당이 합니다. 처방은 같은 제품을 쓰는 다른 건에도 적용됩니다.</p>
-      ${uploadBlock(c, product, !formula.length)}`);
+      <p class="muted small">의약품 해당·한국 원료 구분은 DB 사본과 이름 대조로 자동 판정해요. 이름 대조 결과는 후보이므로 최종 판단은 규제 담당이 합니다. 처방은 같은 제품을 쓰는 모든 건에 적용됩니다.</p>
+      ${own ? uploadBlock(market, product, !formula.length) : '<p class="muted small">처방을 바꾸려면 이 제품을 쓰는 건을 열고 검색하세요.</p>'}`;
   }
 
   // 성분표 파일 → 열 자동 인식 → 미리보기 → 처방으로 저장
-  function uploadBlock(c, product, prominent) {
+  function uploadBlock(market, product, prominent) {
     if (work.draft) {
       const names = work.sheets ? Object.keys(work.sheets) : [];
       return `<div class="reg-sheet">
         <div class="reg-sheet-head"><strong>📄 ${esc(work.draftFrom)}</strong> <span class="muted small">아직 처방에 저장되지 않았어요</span></div>
-        ${table(['성분', '1회 함량', '1일 섭취량', `의약품 해당 (${COUNTRIES[c.country].name})`, '한국 원료 구분', ''], ingredientRows(work.draft, c.country, product, false), { cls: 'reg-ing' })}
+        ${table(['성분', '1회 함량', '1일 섭취량', `의약품 해당 (${COUNTRIES[market].name})`, '한국 원료 구분', ''], ingredientRows(work.draft, market, product, false), { cls: 'reg-ing' })}
         ${names.length ? `<details class="fold reg-fold"><summary>성분이 이상하게 읽혔나요? 시트·열 바꾸기</summary>
           <div class="form-grid three">
             <label class="block">시트<select data-map="sheet">${options(names, work.sheet)}</select></label>
@@ -413,10 +437,27 @@
   }
 
   // ---------- 동작 ----------
-  function doSearch(page, s) {
-    work.search = Object.assign({ market: page.querySelector('[data-s="market"]').value, done: true }, s);
-    page.querySelector('[data-out="search-result"]').innerHTML = pharmaResult(work.search);
+  function doSearch(page, s, c) {
+    work.search = Object.assign({ market: page.querySelector('[data-s="market"]').value, done: true, productId: null }, s);
+    page.querySelector('[data-out="search-result"]').innerHTML = searchResult(work.search, c);
     page.querySelector('[data-out="suggest"]').hidden = true;
+    bindResult(page);
+  }
+  function searchText(page, q, c) {
+    const p = findProduct(q);
+    doSearch(page, p ? { q: p.name, ing: null, productId: p.id } : { q, ing: null }, c);
+  }
+
+  // 검색 결과 안의 성분표 업로드 칸 (끌어다 놓기) · 시트·열 선택
+  function bindResult(page) {
+    const drop = page.querySelector('[data-drop]');
+    if (drop) {
+      const cur = () => { const cc = S.cases.get(work.caseId); return cc && S.products.get(cc.productId); };
+      drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
+      drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+      drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); const p = cur(); if (p && e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0], p); });
+    }
+    if (work.draft && work.sheets && page.querySelector('[data-map="hasHeader"]')) fillCols(page);
   }
 
   function bind(page, c, product) {
@@ -426,18 +467,25 @@
       const act = t.dataset.act;
       if (act === 'search') {
         const q = page.querySelector('[data-s="q"]').value.trim();
-        if (q.length < 2) { toast('성분명을 2글자 이상 입력하세요.', 'warn'); return; }
-        doSearch(page, { q, ing: null });
+        if (q.length < 2) { toast('성분명이나 제품명을 2글자 이상 입력하세요.', 'warn'); return; }
+        searchText(page, q, c);
       } else if (act === 'pick-suggest') {
         page.querySelector('[data-s="q"]').value = t.dataset.v;
-        doSearch(page, { q: t.dataset.v, ing: null });
+        if (t.dataset.p) doSearch(page, { q: t.dataset.v, ing: null, productId: t.dataset.p }, c);
+        else doSearch(page, { q: t.dataset.v, ing: null }, c);
+      } else if (act === 'pick-product') {
+        const p = S.products.get(t.dataset.p);
+        if (!p) return;
+        page.querySelector('[data-s="q"]').value = p.name;
+        doSearch(page, { q: p.name, ing: null, productId: p.id }, c);
       } else if (act === 'pick-ing') {
-        const ing = (product.formula || [])[Number(t.dataset.i)];
+        const src = S.products.get(t.dataset.p) || product;
+        const ing = (src.formula || [])[Number(t.dataset.i)];
         if (!ing) return;
         page.querySelector('[data-s="q"]').value = ing.nameKo || ing.nameEn;
-        doSearch(page, { q: ing.nameKo || ing.nameEn, ing: { nameKo: ing.nameKo, nameEn: ing.nameEn } });
+        doSearch(page, { q: ing.nameKo || ing.nameEn, ing: { nameKo: ing.nameKo, nameEn: ing.nameEn } }, c);
         page.querySelector('[data-out="search-result"]').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } else if (act === 'jp-part') setPart(product.id, Number(t.dataset.i), t.dataset.v);
+      } else if (act === 'jp-part') setPart(t.dataset.p || product.id, Number(t.dataset.i), t.dataset.v);
       else if (act === 'extract') { readMap(page); extract(product); }
       else if (act === 'draft-cancel') { work.draft = null; work.sheets = null; DASH.refresh(); }
       else if (act === 'draft-apply') applyDraft(c.id, 'replace');
@@ -456,26 +504,23 @@
     q.addEventListener('input', () => {
       const out = page.querySelector('[data-out="suggest"]');
       const extra = (product.formula || []).map(i => i.nameKo || i.nameEn).filter(Boolean);
-      const list = S.reference.suggest(q.value, extra);
-      out.innerHTML = list.map(x => `<li><button type="button" data-act="pick-suggest" data-v="${esc(x.label)}">${esc(x.label)} <span class="muted small">${esc(x.kind)}</span></button></li>`).join('');
+      const n = normName(q.value);
+      const prods = n.length < 2 ? [] : S.products.list().filter(p => normName(p.name).includes(n)).slice(0, 5)
+        .map(p => ({ label: p.name, kind: `제품 ${p.id}`, p: p.id }));
+      const list = prods.concat(S.reference.suggest(q.value, extra)).slice(0, 12);
+      out.innerHTML = list.map(x => `<li><button type="button" data-act="pick-suggest" data-v="${esc(x.label)}"${x.p ? ` data-p="${esc(x.p)}"` : ''}>${x.p ? '📦 ' : ''}${esc(x.label)} <span class="muted small">${esc(x.kind)}</span></button></li>`).join('');
       out.hidden = !list.length;
     });
     q.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); page.querySelector('[data-act="search"]').click(); } });
 
-    // 업로드 (클릭·끌어다 놓기)
-    const drop = page.querySelector('[data-drop]');
-    if (drop) {
-      drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
-      drop.addEventListener('dragleave', () => drop.classList.remove('over'));
-      drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); if (e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0], product); });
-    }
-    if (work.draft && work.sheets) fillCols(page);
+    // 업로드 (클릭·끌어다 놓기) — 업로드 칸은 검색 결과 안에 있어 결과가 바뀔 때마다 다시 연결한다
+    bindResult(page);
 
     page.addEventListener('change', e => {
       const t = e.target;
-      if (t.dataset.act === 'upload') { if (t.files[0]) readFile(t.files[0], product); t.value = ''; return; }
+      if (t.dataset.act === 'upload') { if (t.files[0]) readFile(t.files[0], S.products.get(product.id) || product); t.value = ''; return; }
       if (t.dataset.map) { if (t.dataset.map === 'sheet' || t.dataset.map === 'hasHeader') { work.sheet = page.querySelector('[data-map="sheet"]').value; work.map = null; fillCols(page); } return; }
-      if (t.dataset.s === 'market' && work.search && work.search.done) { doSearch(page, { q: work.search.q, ing: work.search.ing }); return; }
+      if (t.dataset.s === 'market' && work.search && work.search.done) { doSearch(page, { q: work.search.q, ing: work.search.ing, productId: work.search.productId }, c); return; }
       if (t.dataset.s) return;
       const cur = S.cases.get(c.id);
       cur.regulatory = cur.regulatory || {};

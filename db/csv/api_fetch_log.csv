@@ -9,3 +9,4 @@ fda_supplement_recalls,587,openFDA food/enforcement,품목 설명에 'dietary su
 export_stats,0,관세청 nitemtrade,키 없음 — 건너뜀,2026-11-05
 vn_holidays_2027,22,baochinhphu.vn 2026-10-12 (db/source/vn_holidays_2027.pdf),Nager.Date VN 2027을 정부 발표로 교체. 설(Tết) 2/4~2/10은 공무원 기준(민간은 3가지 안 중 선택),2026-11-06
 jp_pharma_only,332,厚生労働省 専ら医薬品として使用される成分本質(原材料)リスト (db/source/jp_pharma_only_ingredients.pdf),"PDF 표를 그대로 옮김. 部位等에 적힌 부위만 의약품 전용, 備考 「非医」는 다른 부위·유사 원료",2026-11-06
+comtrade_imports,26,UN Comtrade public preview (키 없음),JP·VN·US의 HS 210690 연간 수입액 (전 세계·한국발). 신고국 보고 기준 CIF. VN 2024~2025는 미보고. 미리보기는 1회 1개 연도·500행 제한,2026-11-06

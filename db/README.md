@@ -23,7 +23,9 @@
 | `data/jp-pharma-only.js` | `ref_jp_pharma_only` | 규제 확인 (일본 건) 의약품 전용 성분 목록·후보 |
 | `data/fda-recalls.js` | `api_fda_supplement_recalls` | 규제 확인 (미국 건) FDA 리콜 사례 |
 
-`api_kr_hff_products`(46,200건)·`api_kr_item_groups`·`api_export_stats`는 아직 화면에 쓰지 않는다.
+`api_kr_hff_products`(46,200건)·`api_kr_item_groups`·`api_export_stats`·`api_comtrade_imports`는 아직 화면에 쓰지 않는다.
+
+`api_comtrade_imports`는 UN Comtrade 공개 미리보기(키 없음)로 받은 JP·VN·US의 HS 210690 연간 수입액(전 세계·한국발, 2021~2025)이다. 베트남 2024~2025는 아직 보고되지 않았다. 더 많은 품목·월별 자료는 `UN_COMTRADE_KEY`가 필요하다.
 
 ## 데이터 주의
 
