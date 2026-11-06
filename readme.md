@@ -51,7 +51,7 @@
 ### 1-3. 탭 구성 (순서 고정)
 
 ```
-🏠 홈  →  📜 규제 확인  →  🧪 개발요청서  →  💰 원가
+🏠 홈  →  🔎 바이어 발굴  →  📜 규제 확인  →  🧪 개발요청서  →  💰 원가
 ```
 
 - **등록·신고 탭과 관리자 메뉴는 없앴다.** 현지 등록·신고는 명의자인 바이어가 진행하고, 우리는 견적 합의(`stage: 'agreed'`)까지 다룬다. 등록·시험 비용 부담 주체는 원가 탭 견적서에 넣는다.
@@ -105,6 +105,13 @@ code health-supplement-dashboard
 | 규제 확인 — FDA 리콜 | `FDA_API` | openFDA https://open.fda.gov/apis/authentication/ |
 | 개발요청서 파일 자동변환 · AI 문구 변환 | `OPENAI_API_KEY` | https://platform.openai.com/api-keys |
 | 뉴스 RSS | 키 없음 | 식약처·업계지 공식 RSS (수집을 막은 사이트는 제목·링크만) |
+| 바이어 발굴 ① 국가 선정 — 국가별 건기식(HS 2106.90) 수입 규모 | `UN_COMTRADE_KEY` | UN Comtrade https://comtradedeveloper.un.org → 무료 구독 키 |
+| 바이어 발굴 ② 잠재 바이어 목록 | 키 없음 (회원가입) | KOTRA 바이코리아 https://www.buykorea.org (바이어 구매 문의) · 한국무역협회 tradeKorea https://www.tradekorea.com · 공공데이터포털에서 'KOTRA' 검색 후 바이어 관련 데이터셋 활용신청 · 유료: Panjiva·ImportGenius (미국 수입 통관 기록) |
+| 바이어 발굴 ③ 포트폴리오 — 미국 보충제 라벨 (브랜드·제형·원료) | 키 없음 | NIH ODS Dietary Supplement Label Database API https://dsld.od.nih.gov/api-guide |
+| 바이어 발굴 ③ 포트폴리오 — 일본 기능성표시식품 신고 기업·제품 | 키 없음 | 소비자청 기능성표시식품 신고 DB https://www.fld.caa.go.jp/caaks/cssc01/ (CSV 내려받기) |
+| 바이어 발굴 ③ 기업 등록 정보 (법인 존재·주소) | `OPENCORPORATES_API_KEY` (선택) | OpenCorporates https://api.opencorporates.com |
+| 바이어 발굴 ③·⑥ 홈페이지 요약·메일 문구 다듬기 | `OPENAI_API_KEY` (위와 같음) | https://platform.openai.com/api-keys |
+| 바이어 발굴 ⑥·⑦ 제안 메일 발송·답장 확인 | `GMAIL_ADDRESS`, `GMAIL_APP_PASSWORD` | Google 계정 → 2단계 인증 → 앱 비밀번호 https://myaccount.google.com/apppasswords (SMTP·IMAP) |
 
 ---
 
@@ -120,6 +127,7 @@ health-supplement-dashboard/
 │       ├── home.css            # .tab-home 안에서만
 │       ├── regulatory.css      # .tab-reg
 │       ├── request.css         # .tab-req
+│       ├── buyers.css          # .tab-byr
 │       └── cost.css            # .tab-cost
 ├── js/
 │   ├── core/
@@ -136,11 +144,13 @@ health-supplement-dashboard/
 │   │   ├── documents.js
 │   │   ├── rules.js
 │   │   ├── settings.js         # 환율(원가 탭 직접 입력 → 없으면 DB 사본)·공휴일(DB 사본)
-│   │   └── reference.js        # 식약처 원료·일본 의약품 전용 성분·FDA 리콜 조회
+│   │   ├── reference.js        # 식약처 원료·일본 의약품 전용 성분·FDA 리콜 조회
+│   │   └── prospects.js        # 잠재 바이어·영업 적합도·자사 제조 역량·영업 관리 목록
 │   └── tabs/
 │       ├── home.js
 │       ├── regulatory.js
 │       ├── request.js
+│       ├── buyers.js           # 🔎 바이어 발굴
 │       └── cost.js
 ├── data/
 │   ├── rules-jp.js             # 일본 규칙 (6-2)
@@ -155,7 +165,8 @@ health-supplement-dashboard/
 │   ├── fda-recalls.js          # FDA 건기식 리콜 (DB 사본)
 │   ├── markets.js              # 국가 요약 카드 데이터 (1-2 수치 + 출처)
 │   ├── sample-products.js      # 예시 제품 3개 (가상)
-│   └── sample-cases.js         # 예시 건 3개 (가상)
+│   ├── sample-cases.js         # 예시 건 3개 (가상)
+│   └── buyer-prospects.js      # 바이어 발굴 마스터(국가·유형·카테고리·원료·거래 형태)·잠재 바이어(가상)·자사 제조 역량 기본값
 ├── vendor/
 │   └── xlsx.full.min.js        # SheetJS (버전 고정, 로컬 보관)
 └── tests/
@@ -173,8 +184,8 @@ health-supplement-dashboard/
 | 대상 | 규칙 | 예 |
 |---|---|---|
 | 전역 변수 | `window.DASH`, `window.DASH_DATA` 두 개만 | 나머지는 즉시실행 함수 안 |
-| 탭 ID | `home`, `regulatory`, `request`, `cost` | URL 해시와 같음 |
-| CSS 접두사 | `home-`, `reg-`, `req-`, `cost-` | `.tab-reg .reg-result` |
+| 탭 ID | `home`, `buyers`, `regulatory`, `request`, `cost` | URL 해시와 같음 |
+| CSS 접두사 | `home-`, `byr-`, `reg-`, `req-`, `cost-` | `.tab-reg .reg-result` |
 | 저장 키 | `hsd:<영역>:<이름>` | `hsd:cases`, `hsd:docs`, `hsd:ui:lastTab` |
 | 버튼 동작 | `data-act` + `addEventListener` (`onclick=` 금지) | `data-act="run-check"` |
 | 국가 코드 | `JP`, `VN`, `US` | 대문자 고정 |
@@ -553,12 +564,50 @@ P4 = P3 × (1 − 수량 할인) × (1 + MOQ 미만 할증)        USD = P4 / �
 - 판정 구간 색은 4-4 규칙대로 초록을 쓰지 않는다 (수락 = 파랑).
 - 상단 `견적 합의로 표시` → `stage: 'agreed'`. 이후 처방을 바꾸면 처방 변경 경고(VN 새 등록 / US NDI 재확인 / JP 근거 재확인)가 기록된다.
 
+### 7-5. 🔎 바이어 발굴 (reboot-dashboard '업체 컨택' 짜임)
+
+목표: 건강기능식품을 취급하는 기업 중 자사에 맞는 해외 바이어를 찾고, 제안·첫 연락·후속 관리까지 한 탭에서 이어 간다. 건이 없어도 쓸 수 있다 (`needsCase: false`).
+
+**간편화 원칙** — 검색 조건 6줄(국가·유형·카테고리·원료·제형·거래 형태 칩)을 모두 고르게 하지 않는다.
+- 점수 기준은 **기준 제품 하나**로 정한다. 자사 제품을 고르면 카테고리·원료·제형이 자동으로 들어가고, 개발 전이면 '신규 아이디어'에서 카테고리·제형 두 개만 고른다.
+- 목록은 **한 줄 필터 바**로 좁힌다: 검색창(기업·국가·제품·원료) + 국가·유형·세부 카테고리 드롭다운(옵션마다 개수 표시) + 토글 2개(자사 생산 가능만 · 규제 규칙 있는 국가만) + 필터 지우기 + 정렬.
+- 처음부터 전체 목록을 적합도 순으로 보여 주고, 필터는 좁힐 때만 쓴다.
+
+```
+[현황 띠: 관리 중인 바이어 · 진행 중인 협의 · 7일 안 후속 연락]
+[🔎 바이어 찾기 | ✉️ 제안 작성 | 🗂️ 영업 관리]
+바이어 찾기:  ① 기준 [자사 제품 | 신규 아이디어] [제품 ▼]
+              ② 바이어 목록 (한 줄 필터 바 · 표 · 페이지)        | 오른쪽 바이어 카드 (③ 포트폴리오 · ④ 자사 생산 비교 · ⑤ 적합도 구성 · 최근 활동 · 제안 작성 ↗)
+```
+
+**실무 흐름(페인포인트) → 화면 위치**
+
+| 실무 단계 | 지금 겪는 불편 | 위치 |
+|---|---|---|
+| ① 수출 목표 국가·제품군 선정 | 조건을 매번 처음부터 정함 | 기준 제품 + 국가 드롭다운 |
+| ② 잠재 바이어 검색 | 목록이 엑셀·메일에 흩어짐 | 바이어 목록 (기업·국가·유형·세부 카테고리·영업 적합도·확인 근거, 페이지당 8곳) |
+| ③ 홈페이지·포트폴리오 분석 | 홈페이지를 하나씩 열어 메모 | 바이어 카드 ③ (채널·제품군·메모 + 분석 메모 입력) |
+| ④ 자사 생산 가능 제품과 비교 | 생산·인증 가능 여부를 따로 물음 | 바이어 카드 ④ (제형·원료·인증·거래 형태: ✓ 가능 / ✕ 불가 / ? 확인 필요) |
+| ⑤ 거래 가능성·우선순위 판단 | 감으로 순서를 정함 | 목록 정렬(적합도) + 바이어 카드 ⑤ (6개 항목 점수, A/B/C) |
+| ⑥ 바이어별 제품 제안 준비 | 바이어마다 메일을 새로 씀 | 제안 작성 (받는 바이어·제안 제품·제안 포인트 → 영문 초안, 표현 점검, 현지 시각) |
+| ⑦ 첫 영업 연락·후속 관리 | 후속 연락을 놓침 | 영업 관리 (단계별 보드 + 표: 다음 할 일·다음 연락일·연락 기록·건으로 전환) |
+
+**영업 적합도 (100점)** — 제품군 일치 25 · 제형 생산 가능 20 · 취급 원료 유사 20 · 거래 형태 적합 15 · 국가 진입 준비(규제 규칙 등록) 10 · 요구 인증 보유 10.
+점수는 **영업 우선순위 지표**이며 구매 확률이 아니다 (87점 ≠ 구매 확률 87%). 화면에 항상 이 문구를 표시한다.
+
+- 제안 작성의 '보냈어요 — 연락 기록 저장'은 관리 목록에 기록하고 단계를 '첫 연락', 다음 연락일을 7일 뒤로 잡는다. 실제 Gmail 발송·답장 확인은 2단계 서버(SMTP·IMAP, 앱 비밀번호).
+- 표현 점검은 규칙 파일의 `claimTerms`(질병·의약품 표현)로 한다. 규칙이 없는 국가는 점검하지 않는다고 표시한다.
+- 잠재 바이어 데이터(`data/buyer-prospects.js`)는 지금 **가상 데이터**이며 이름에 `(가상)`을 붙인다. 실제 데이터는 2-4의 출처에서 수집해 같은 필드로 바꾼다.
+- 저장: 화면 상태 `hsd:ui:byr`, 관리 목록 `hsd:pipeline`, 분석 메모·메일 초안 `hsd:prospectNotes`, 자사 제조 역량 `hsd:settings:capability`.
+- 사이드바 숫자 = 7일 안에 후속 연락할 바이어 수.
+
 ---
 
 ## 8. 탭 간 연결
 
 ```
-+ 새 건(국가·바이어·제품)
+바이어 발굴 ── 건으로 전환(바이어·제품·국가) ──┐
++ 새 건(국가·바이어·제품) ─────────────────────┤
    │
    ▼
 규제 확인 ── case.regulatory ──┬──▶ 개발요청서: 국가 조건·법규 금지 원료·허용 표현·시험 계획

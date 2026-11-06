@@ -1,0 +1,102 @@
+/* 🔎 바이어 발굴 — .tab-byr 안에서만. reboot-dashboard '업체 컨택' 짜임: 현황 띠 → 한 줄 필터 바 + 목록 + 오른쪽 카드 */
+
+/* 현황 띠 (어두운 띠 3칸) */
+.tab-byr .byr-hero { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #1D2939; border-radius: var(--radius); overflow: hidden; color: #E4E7EC; }
+.tab-byr .byr-hero > div { background: #101828; padding: 14px 18px; }
+.tab-byr .byr-hero h3 { font-size: 12px; color: #98A2B3; font-weight: 600; margin: 0; }
+.tab-byr .byr-num { font-size: 28px; font-weight: 800; color: #fff; margin: 2px 0; }
+.tab-byr .byr-num small { font-size: 13px; color: #98A2B3; margin-left: 4px; font-weight: 500; }
+.tab-byr .byr-lime { color: #D9F99D; }
+.tab-byr .byr-hero p { font-size: 12px; color: #98A2B3; margin: 0; }
+.tab-byr .byr-track { height: 4px; background: #344054; border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.tab-byr .byr-track i { display: block; height: 100%; background: #D9F99D; }
+.tab-byr .byr-body { display: flex; flex-direction: column; gap: 16px; }
+
+/* ① 기준 */
+.tab-byr .byr-base { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px; }
+.tab-byr .byr-base-label { font-weight: 700; font-size: 13px; }
+.tab-byr .byr-base .seg-btn { padding: 5px 12px; }
+.tab-byr .byr-base-sum { font-size: 12px; color: var(--muted); }
+
+/* 목록 + 오른쪽 카드 */
+.tab-byr .byr-bench { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; align-items: start; }
+.tab-byr .byr-cfbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 18px; border-bottom: 1px solid var(--line); background: #FCFCFD; }
+.tab-byr .byr-q { width: 220px; border-radius: 999px; padding: 5px 12px; font-size: 13px; }
+.tab-byr .byr-cf { width: auto; border: 1px solid var(--line-strong); border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 12px; background: #fff; color: var(--text); cursor: pointer; }
+.tab-byr .byr-cf.on { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+.tab-byr .byr-gap { flex: 1; }
+.tab-byr .byr-table td { height: 48px; white-space: nowrap; }
+.tab-byr .byr-table td:last-child { white-space: normal; min-width: 110px; font-size: 12px; color: var(--muted); }
+.tab-byr .byr-table td:first-child .byr-1l b { max-width: 200px; }
+.tab-byr .byr-cf { max-width: 170px; }
+.tab-byr .byr-row { cursor: pointer; }
+.tab-byr .byr-row:hover td { background: #F9FAFB; }
+.tab-byr .byr-row.is-sel td { background: var(--primary-soft); }
+.tab-byr .byr-1l { display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; }
+.tab-byr .byr-1l b { overflow: hidden; text-overflow: ellipsis; }
+.tab-byr .byr-av { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; font-size: 11px; font-weight: 800; }
+.tab-byr .av0 { background: #EAF1FE; color: #1849A9; } .tab-byr .av1 { background: #FEF3F2; color: #B42318; } .tab-byr .av2 { background: #F4F3FF; color: #5925DC; }
+.tab-byr .av3 { background: #FFF4E5; color: #B54708; } .tab-byr .av4 { background: #ECFDF3; color: #067647; } .tab-byr .av5 { background: #F2F4F7; color: #344054; }
+.tab-byr .byr-tag { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 999px; background: var(--bg); color: #344054; }
+.tab-byr .byr-st { font-size: 11px; }
+.tab-byr .byr-score { display: flex; align-items: center; gap: 6px; min-width: 130px; }
+.tab-byr .byr-bar { display: inline-block; flex: 1; min-width: 40px; height: 6px; background: var(--noted-bg); border-radius: 3px; overflow: hidden; }
+.tab-byr .byr-bar > span { display: block; height: 100%; background: var(--primary); }
+.tab-byr .byr-pri { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 20px; padding: 0 5px; border-radius: 6px; font-size: 11px; font-weight: 800; }
+.tab-byr .p-A { background: var(--primary); color: #fff; }
+.tab-byr .p-B { background: var(--primary-soft); color: var(--primary); }
+.tab-byr .p-C { background: var(--noted-bg); color: var(--muted); }
+.tab-byr .byr-pg { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+.tab-byr .byr-pgb { border: 1px solid var(--line); background: #fff; border-radius: 6px; min-width: 28px; height: 28px; margin-left: 2px; font: inherit; font-size: 12px; cursor: pointer; }
+.tab-byr .byr-pgb.on { background: #101828; color: #fff; border-color: #101828; }
+.tab-byr .byr-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
+.tab-byr .byr-warn { color: #B54708; }
+
+.tab-byr .byr-detail { position: sticky; top: 72px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 12px; max-height: calc(100vh - 90px); overflow-y: auto; }
+.tab-byr .byr-detail-empty { padding: 40px 12px; }
+.tab-byr .byr-dhead { display: flex; gap: 10px; align-items: center; }
+.tab-byr .byr-dhead .byr-av { width: 40px; height: 40px; font-size: 14px; border-radius: 10px; }
+.tab-byr .byr-dhead h2 { margin: 0; font-size: 17px; }
+.tab-byr .byr-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.tab-byr .byr-stats > div { background: var(--bg); border-radius: 8px; padding: 8px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
+.tab-byr .byr-stats strong { font-size: 18px; }
+.tab-byr .byr-stats strong.is-text { font-size: 13px; }
+.tab-byr .byr-stats small { font-size: 11px; color: var(--muted); }
+.tab-byr .byr-block { border-top: 1px solid var(--line); padding-top: 10px; }
+.tab-byr .byr-block h4 { margin: 0 0 6px; color: var(--text); font-size: 13px; }
+.tab-byr .byr-block .kv { margin: 0 0 6px; }
+.tab-byr .byr-memo { font-size: 12px; padding: 5px 8px; }
+.tab-byr .byr-cmp { display: grid; grid-template-columns: 40px 1fr; gap: 6px 8px; font-size: 12px; align-items: start; }
+.tab-byr .byr-cmp > span { color: var(--muted); font-weight: 600; padding-top: 2px; }
+.tab-byr .byr-cmp > div { display: flex; flex-wrap: wrap; gap: 4px; }
+.tab-byr .byr-ok, .tab-byr .byr-ng, .tab-byr .byr-ck { font-size: 11px; padding: 1px 7px; border-radius: 6px; white-space: nowrap; }
+.tab-byr .byr-ok { background: var(--primary-soft); color: var(--primary); }
+.tab-byr .byr-ng { background: var(--action-bg); color: #B54708; }
+.tab-byr .byr-ck { background: #fff; color: var(--review-text); border: 1px dashed var(--review); }
+.tab-byr .byr-parts { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.tab-byr .byr-parts li { display: grid; grid-template-columns: 96px 1fr 40px; gap: 6px; align-items: center; font-size: 12px; cursor: help; }
+.tab-byr .byr-parts b { text-align: right; font-variant-numeric: tabular-nums; }
+.tab-byr .byr-dactions { display: flex; flex-direction: column; gap: 6px; }
+.tab-byr .byr-dactions .btn { justify-content: center; }
+
+/* 제안 작성 */
+.tab-byr .byr-mail-grid { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 16px; align-items: start; }
+.tab-byr .byr-lbl { font-size: 12px; font-weight: 600; color: var(--muted); }
+.tab-byr .block-like { display: flex; flex-direction: column; gap: 0; margin-bottom: 10px; }
+.tab-byr .block-btn { width: 100%; justify-content: center; margin: 4px 0 8px; }
+.tab-byr .byr-mail { font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+.tab-byr .byr-check { font-size: 13px; padding: 8px 10px; background: var(--bg); border-radius: 8px; }
+
+/* 영업 관리 */
+.tab-byr .byr-board { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.tab-byr .byr-col { background: var(--bg); border-radius: 10px; padding: 8px; display: flex; flex-direction: column; gap: 6px; min-height: 110px; }
+.tab-byr .byr-col-head { font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 4px; }
+.tab-byr .byr-card { text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px; font: inherit; display: flex; flex-direction: column; gap: 3px; cursor: pointer; min-width: 0; }
+.tab-byr .byr-card:hover { border-color: var(--primary); }
+.tab-byr .byr-card .byr-av { width: 22px; height: 22px; font-size: 10px; }
+.tab-byr .byr-name { font-size: 13px; font-weight: 600; text-decoration: none; padding: 0; }
+.tab-byr td input[type="date"] { width: 140px; }
+.tab-byr td select[data-pl="status"] { min-width: 100px; }
+.tab-byr td select[data-pl="productId"] { min-width: 150px; }
+.tab-byr td .byr-name { white-space: nowrap; }
+.byr-capchk { display: flex; flex-wrap: wrap; gap: 4px 16px; }

@@ -4,7 +4,7 @@
 window.DASH_DATA = window.DASH_DATA || {};
 window.DASH_DATA.sampleProducts = [
   {
-    id: 'P-001', sample: true, name: '유산균 캡슐 (가상)', form: 'capsule',
+    id: 'P-001', sample: true, name: '유산균 캡슐 (가상)', form: 'capsule', category: '장 건강',
     koreaStatus: 'notified', koreaClaim: '장 건강에 도움을 줄 수 있음',
     servingsPerDay: 1, unitsPerServing: 1,
     formula: [
@@ -13,7 +13,7 @@ window.DASH_DATA.sampleProducts = [
     ]
   },
   {
-    id: 'P-002', sample: true, name: '콜라겐 젤리 스틱 (가상)', form: 'jelly_stick',
+    id: 'P-002', sample: true, name: '콜라겐 젤리 스틱 (가상)', form: 'jelly_stick', category: '뷰티·이너뷰티',
     koreaStatus: 'individual', koreaClaim: '피부 보습에 도움을 줄 수 있음',
     servingsPerDay: 1, unitsPerServing: 1,
     formula: [
@@ -23,7 +23,7 @@ window.DASH_DATA.sampleProducts = [
     ]
   },
   {
-    id: 'P-003', sample: true, name: '관절 케어 정제 (가상)', form: 'tablet',
+    id: 'P-003', sample: true, name: '관절 케어 정제 (가상)', form: 'tablet', category: '관절·뼈',
     koreaStatus: 'individual', koreaClaim: '관절 건강에 도움을 줄 수 있음',
     servingsPerDay: 2, unitsPerServing: 1,
     formula: [
